@@ -6,8 +6,6 @@ from math import log
 from scipy.stats import rankdata
 import time
 
-
-
 def calculate_counters(c_total, n_fingerprints, c_threshold=None, w_factor="fraction"):
     """Calculate 1-similarity, 0-similarity, and dissimilarity counters
 
