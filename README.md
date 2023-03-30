@@ -7,6 +7,8 @@ This repo contains six different ways of determining the native structure of bio
 ### Usage
 `modules` contains the functions required to run the algorithm. `scripts` contains many examples of how to run the protein refinery framework.
 
+<img src="img/methods.jpg" width="500" height=auto align="right"></a>
+
 Step 1. 
 - Normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
 - In `sample_clusters/spacing.py`, edit `break =` for the number of lines of one frame. 
