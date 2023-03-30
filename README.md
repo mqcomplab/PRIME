@@ -1,11 +1,13 @@
-# Protein Refinement in Molecular Ensembles (PRIME)
+<img src="img/header.jpg" width="1000" height=auto align="center"></a>
+
 **🪄 Mastering the art of protein refinement, one conformation at a time 🪄**
+
 Refining protein structures is important because the accuracy of protein structures influence how our understanding of its function and its interactions with other molecules, which can help to design new drugs to target specific molecular interactions.  
 
 This repo contains six different ways of determining the native structure of biomolecules from simulation or clustering data. 
 
 ### Usage
-`modules` contains the functions required to run the algorithm. `scripts` contains many examples of how to run the protein refinery framework.
+`modules` contains the functions required to run the algorithm. `scripts` contains many examples of how to run the protein refinery framework. In the naming sch
 
 <img src="img/methods.jpg" width="500" height=auto align="right"></a>
 
@@ -15,8 +17,6 @@ Step 1.
 - This will give `normed_data.txt` and `normed_*.txt` for each file. 
 
 Step 2. Execute the scripts in `scripts`
-- 2.1 refers to the pairwise method.
-- 2.2 refers to the union method.
-- 3.1 refers to the medoid method.
-- 3.2 refers to the outlier method. 
 
+
+Step 3. Determine the 
