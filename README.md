@@ -19,4 +19,4 @@ Step 1.
 Step 2. Execute the scripts in `scripts`
 
 
-Step 3. Determine the 
+Step 3. Determine the native structure using `scripts/rep.py`.
