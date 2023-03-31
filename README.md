@@ -20,7 +20,7 @@ Step 1.
 
 
 
-Step 2. Execute the scripts in `scripts`. Naming schemes is `{method}_{indice}`. The default indice is Russell Rao. For example `2.1.py` uses 2.1 method from Figure on the right using Russell Rao index. `2.1_sm.py` uses 2.1 method using the Sockal Michener index. All the scripts will generate a dictionary of similarity results.
+Step 2. Execute the scripts in `scripts`. All the scripts will generate a dictionary of similarity results.
 The dictionary format is 
 ```
 """
