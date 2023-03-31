@@ -8,7 +8,7 @@ This repo contains six different ways of determining the native structure of bio
 
 <img src="img/methods.jpg" alt="Girl in a jacket" width="500" height=auto align="center"></a>
 
-*Fig 1. Six techniques of protein refinement. Blue is top cluster.* <span style="color:blue">some *blue* text</span>.
+*Fig 1. Six techniques of protein refinement. Blue is top cluster.* 
 
 ### Usage
 `modules` contains the functions required to run the algorithm. `scripts` contains many examples of how to run the protein refinery framework. The naming schemes followes the *Fig. 1*. 
