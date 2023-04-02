@@ -1,4 +1,3 @@
-# change it back to n_clusters=None for the published version. 
 from modules.sim_modules_vector import *
 import numpy as np
 import re
@@ -6,17 +5,17 @@ import json
 import glob
 
 class SimilarityCalculator:
-    def __init__(self, cluster_file_pattern='new_clusters/normed_clusttraj.', summary_file='Cpptraj_linkage_sieve_eps_2/summary', trim_frac=0.1, n_clusters=11, weighted=True, n_ary='RR', weight='nw'):
+    def __init__(self, cluster_folder=None, summary_file=None, trim_frac=None, n_clusters=None, weighted=True, n_ary='RR', weight='nw'):
         """
         cluster_file_pattern is the file path and pattern of the normalized clusters from preprocess.py. summary_file can be found within the CPPTRAJ clustering output.
         trim_frac is the fraction of outliers user wish to trim from the dominant c0 cluster. n_clusters is the number of cluster the user wish to analyze, None will be all clusters. 
         weighted is when similarity values are weighted by the number of frames of the cluster and this is stored in the summary file from clustering.
         n_ary and weight define the similar metric the user wishes to use. All options found in sim_modules_vector under gen_sim_dict.
         """
-        self.c0 = np.genfromtxt(f"{cluster_file_pattern}c0")
+        self.c0 = np.genfromtxt(f"{cluster_folder}/normed_clusttraj.c0")
         if trim_frac:
             self.c0 = trim_outliers(self.c0, trim_frac=trim_frac, n_ary=n_ary, weight=weight)
-        self.input_files = sorted(glob.glob(f"{cluster_file_pattern}c*"), key=lambda x: int(re.findall("\d+", x)[0]))[1:]
+        self.input_files = sorted(glob.glob(f"{cluster_folder}/normed_clusttraj.c*"), key=lambda x: int(re.findall("\d+", x)[0]))[1:]
         self.summary_file = summary_file
         self.n_clusters = n_clusters
         self.weighted = weighted
@@ -155,4 +154,5 @@ def sort_dict_add_avg(dict):
         nw_dict[k].append(average)
     
     return nw_dict
+
 
