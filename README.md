@@ -11,18 +11,12 @@ This repo contains six different ways of determining the native structure of bio
 *Fig 1. Six techniques of protein refinement. Blue is top cluster.* 
 
 ### Usage
-`modules` contains the functions required to run the algorithm. `scripts` contains many examples of how to run the protein refinery framework. The naming schemes followes the *Fig. 1*. 
+`modules` contains the functions required to run the algorithm. `scripts` contains many examples of how to run the protein refinery framework. The naming schemes followes the *Fig. 1*. `new_clusters` contains a sample clustering results from 
 
-Step 1. 
-- Normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
-- In `sample_clusters/spacing.py`, edit `break =` for the number of lines of one frame. 
-- This will give `normed_data.txt` and `normed_*.txt` for each file. 
-
-
-
-Step 2. Execute the scripts in `scripts`. All the scripts will generate a dictionary of similarity results.
-The dictionary format is 
 ```
+git clone https://github.com/lexin-chen/PRIME.git
+```
+
 """
 Keyes are frame #.
 Values are [cluster 1 similarity, cluster #2 similarity, 
