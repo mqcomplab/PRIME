@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=spacing
+#SBATCH --job-name=normalize
 #SBATCH --output=py.out
 #SBATCH --error=py.err
 #SBATCH --mail-type=NONE
@@ -9,9 +9,9 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1    # number of CPU core to use
 #SBATCH --mem-per-cpu=100gb
-#SBATCH --account=rmirandaquintana
-#SBATCH --qos=rmirandaquintana
+#SBATCH --account=group
+#SBATCH --qos=group
 
 ml python
 
-python spacing.py
+python normalize.py
