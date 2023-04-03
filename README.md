@@ -41,7 +41,7 @@ Back at root directory, `similarity.py` generates a similarity dictionary from r
 ```
 python similarity.py -m medoid -n 11 -i RR
 ```
-To generate a similarity dictionary using data in `sample_clusters/norm_clusttraj.c*` using the medoid method (3.1 in *Fig 1*) and Russell Rao index.
+To generate a similarity dictionary using data in `sample_clusters/normed_clusttraj.c*` using the medoid method (3.1 in *Fig 1*) and Russell Rao index.
 
 The result is a dictionary organized as followes:
 Keys are frame #. Values are [cluster 1 similarity, cluster #2 similarity, ..., average similarity of all clusters].
