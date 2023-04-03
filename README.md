@@ -24,6 +24,7 @@ git clone https://github.com/lexin-chen/PRIME.git
 ```
 cd sample_clusters
 python normalize.py -b 950
+```
 ### Step 3. Similarity Calculations
 `similarity.py` generates a similarity dictionary from running the protein refinement method. 
 - `-h` - for help with the argument options.
