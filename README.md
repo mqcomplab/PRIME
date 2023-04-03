@@ -11,8 +11,7 @@ This repo contains six different ways of determining the native structure of bio
 *Fig 1. Six techniques of protein refinement. Blue is top cluster.* 
 
 ## Usage
-`modules` contains the functions required to run the algorithm. `sample_clusters/clusttraj.c*` contains sample clustering files prepared through CPPTRAJ Hierarchical clustering.  
-
+`modules` contains the functions required to run the algorithm. `new_clusters/clusttraj.c*` contains sample clustering files prepared through CPPTRAJ Hierarchical clustering. `new_clusters/normed_clusttraj.c*` consists clustering files normalized through min-max normalization. `new_clusters/normed_data.txt` contains all clustering files are appended through and normalized. `similarity.py` generates a similarity dictionary from running the protein refinement method.
 ## Tutorial
 
 ### Step 1.
