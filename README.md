@@ -40,7 +40,7 @@ python similarity.py -m medoid -n 11 -i RR
 To generate a similarity dictionary using data in `sample_clusters/norm_clusttraj.c*` using the medoid method (3.1 in *Fig 1*) and Russell Rao index.
 
 The result is a dictionary organized as followes:
-Keyes are frame #. Values are [cluster 1 similarity, cluster #2 similarity, ..., average similarity of all clusters].
+Keys are frame #. Values are [cluster 1 similarity, cluster #2 similarity, ..., average similarity of all clusters].
 
 ### Step 4. Determine the native structure.
 
