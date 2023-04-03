@@ -21,7 +21,9 @@ git clone https://github.com/lexin-chen/PRIME.git
 ### Step 2. Normalization
 
 - Normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
-
+```
+cd sample_clusters
+python normalize.py -b 950
 ### Step 3. Similarity Calculations
 `similarity.py` generates a similarity dictionary from running the protein refinement method. 
 - `-h` - for help with the argument options.
