@@ -18,7 +18,7 @@ parser.add_argument('-w', '--weighted', help='Weighing clusters by frames it con
 parser.add_argument('-d', '--cluster_folder', help='Location of the cluster files directory', 
                     default="new_clusters/")
 parser.add_argument('-s', '--summary_file', help='Location of CPPTRAJ cluster summary file', 
-                    default="../Cpptraj_linkage_sieve_eps_2/summary")
+                    default="summary")
 args = parser.parse_args()
 
 # Calculate similarities
