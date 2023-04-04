@@ -1,13 +1,11 @@
 <img src="img/3.png" width="1000" height=auto align="center"></a>
 <br>
-<br>
+
 <h3 align="center">
     <p><b>🪄 Mastering the art of protein refinement, one conformation at a time 🪄</b></p>
     </h3>
 
-Refining protein structures is important because the accuracy of protein structures influence how our understanding of its function and its interactions with other molecules, which can help to design new drugs to target specific molecular interactions.  
-
-This repo contains six different ways of determining the native structure of biomolecules from simulation or clustering data. 
+Refining protein structures is important because the accuracy of protein structures influence how our understanding of its function and its interactions with other molecules, which can help to design new drugs to target specific molecular interactions. This repo contains six different ways of determining the native structure of biomolecules from simulation or clustering data. 
 
 <img src="img/methods.jpg" alt="Girl in a jacket" width="500" height=auto align="center"></a>
 
