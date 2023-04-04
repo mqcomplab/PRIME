@@ -1,6 +1,8 @@
-<img src="img/header.jpg" width="1000" height=auto align="center"></a>
+<img src="img/header.svg" width="1000" height=auto align="center"></a>
+<br>
+<br>
 
-**🪄 Mastering the art of protein refinement, one conformation at a time 🪄**
+### **🪄 Mastering the art of protein refinement, one conformation at a time 🪄**
 
 Refining protein structures is important because the accuracy of protein structures influence how our understanding of its function and its interactions with other molecules, which can help to design new drugs to target specific molecular interactions.  
 
