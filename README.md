@@ -1,4 +1,4 @@
-<img src="img/3.png" width="1000" height=auto align="center"></a>
+<img src="img/3.png" width="900" height=auto align="center"></a>
 <br>
 
 <h3 align="center">
