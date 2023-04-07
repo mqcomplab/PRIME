@@ -5,11 +5,11 @@
     <p><b>🪄 Mastering the art of protein refinement, one conformation at a time 🪄</b></p>
     </h3>
 
-Refining protein structures is important because the accuracy of protein structures influence how our understanding of its function and its interactions with other molecules, which can help to design new drugs to target specific molecular interactions. This repo contains six different ways of determining the native structure of biomolecules from simulation or clustering data. 
+Refining protein structures is important because the accuracy of protein structures influence how our understanding of its function and its interactions with other molecules, which can help to design new drugs to target specific molecular interactions. This repo contains six different ways of determining the native structure of biomolecules from simulation or clustering data. These methods perfectly mapped all the structural motifs in the studied systems and required unprecedented linear scaling.
 
-<img src="img/methods.jpg" alt="Girl in a jacket" width="500" height=auto align="center"></a>
+<img src="img/2k2e.png" alt="2k2e" width="500" height=auto align="center"></a>
 
-*Fig 1. Six techniques of protein refinement. Blue is top cluster.* 
+*Fig 1. Superposition of the most representative structures found with extended indices (yellow) and experimental native structures (blue) of 2k2e.*
 
 ## Usage
 `modules` contains the functions required to run the algorithm. `sample_clusters/clusttraj.c*` contains sample clustering files prepared through CPPTRAJ Hierarchical clustering. `new_clusters/normalize.py` normalizes clustering files through min-max normalization. `similarity.py` generates a similarity dictionary from running the protein refinement method.
@@ -48,4 +48,9 @@ The result is a dictionary organized as followes:
 Keys are frame #. Values are [cluster 1 similarity, cluster #2 similarity, ..., average similarity of all clusters].
 
 ### Step 4. Determine the native structure.
+`scripts/rep.py`
 
+### Further Reading
+<img src="img/methods.jpg" alt="methods" width="500" height=auto align="center"></a>
+
+ *Fig 2. Six techniques of protein refinement. Blue is top cluster.* 
