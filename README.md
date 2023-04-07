@@ -33,18 +33,18 @@ Output will have `normed_clusttraj.c*` files and `normed_data.txt`, appended all
 ### Step 3. Similarity Calculations
 Back at root directory, `similarity.py` generates a similarity dictionary from running the protein refinement method. 
 - `-h` - for help with the argument options.
-- `-m` - methods (*required)
-- `-n` - number of clusters (*required)
-- `-i` - similarity index (*required)
+- `-m` - methods (*required*)
+- `-n` - number of clusters (*required*)
+- `-i` - similarity index (*required*)
 - `-t` - Fraction of outliers to trim in decimals. 
 - `-w` - Weighing clusters by frames it contains.
 - `-d` - directory where the `normed_clusttraj.c*` files are located.
 - `-s` - location where `summary` file is located
 
 ```
-python similarity.py -m medoid -n 11 -i RR
+python similarity.py -m medoid -n 11 -i RR -t 0.1
 ```
-To generate a similarity dictionary using data in `sample_clusters/normed_clusttraj.c*` using the medoid method (3.1 in *Fig 1*) and Russell Rao index.
+To generate a similarity dictionary using data in `sample_clusters/normed_clusttraj.c*` using the medoid method (3.1 in *Fig 1*) and Russell Rao index. In addition, 10% of the outliers were trimmed. 
 
 The result is a dictionary organized as followes:
 Keys are frame #. Values are [cluster 1 similarity, cluster #2 similarity, ..., average similarity of all clusters].
