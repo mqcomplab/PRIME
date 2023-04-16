@@ -224,7 +224,17 @@ def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw'):
     return total_data
 
 def weight_dict(file_path=None, summary_file=None, dict=None, n_clusters=None):
-    """ Similarity values are frame_weighted_sim by the number of frames of the cluster and this is stored in the summary file from clustering. """
+    """ Calculates frame-weighted similarity values by the number of frames in each cluster.
+
+    Args:
+        file_path (str): Path to the json file containing the unweighted similarity values between each pair of clusters.
+        summary_file (str): Path to the summary file containing the number of frames in each cluster (CPPTRAJ output).
+        dict (dict): A dictionary containing the unweighted similarity values between each pair of clusters.
+        n_clusters (int): The number of clusters to analyze. Default is `None`, analyze all clusters from summary file.
+
+    Returns:
+        w_dict (dict): frame-weighted similarity values between each pair of clusters.
+    """
     if file_path is not None:
         with open(file_path, 'r') as file:
             dict = json.load(file)
@@ -251,15 +261,22 @@ def weight_dict(file_path=None, summary_file=None, dict=None, n_clusters=None):
     return w_dict
 
 def sort_dict_add_avg(dict):
-    """ The dictionary is organized in order of frames and the average is attached to the end of each key. """
-    nw_dict = {}
+    """
+    Sorts the dictionary by the key and attaches the average value to the end of each key.
+
+    Args:
+        dict (dict): A dictionary containing the similarity values.
+
+    Returns:
+        sorted_dict (dict): Sorted by the keys with the average value attached to the end of each key.
+    """
+    sorted_dict = {}
     for i in sorted(dict):
         for k, v in dict[i].items():
-            if k not in nw_dict:
-                nw_dict[k] = [None] * len(dict)
-            nw_dict[k][i] = v
-    for k in nw_dict:
-        average = sum(nw_dict[k]) / len(nw_dict[k])
-        nw_dict[k].append(average)
-    
-    return nw_dict
+            if k not in sorted_dict:
+                sorted_dict[k] = [None] * len(dict)
+            sorted_dict[k][i] = v
+    for k in sorted_dict:
+        average = sum(sorted_dict[k]) / len(sorted_dict[k])
+        sorted_dict[k].append(average)   
+    return sorted_dict
