@@ -12,7 +12,7 @@ class SimilarityCalculator:
         input_files (list): The list of cluster files.
         summary_file (str): The path to the summary file.
         n_clusters (int): The number of clusters to analyze.
-        weighted (bool): Whether to weight the similarity values by the number of frames in the cluster.
+        frame_weighted_sim (bool): Whether to weight the similarity values by the number of frames in the cluster.
         n_ary (str): The n_ary similarity metric to use.
         weight (str): The weight to use for the similarity metric.
     
@@ -24,27 +24,48 @@ class SimilarityCalculator:
         calculate_outliers: Calculates the similarity between the dominant cluster and the cluster with the highest average distance to the dominant cluster.
     """
     
-    def __init__(self, cluster_folder=None, summary_file=None, trim_frac=None, n_clusters=None, weighted=True, n_ary='RR', weight='nw'):
-        """
-                
-        cluster_file_pattern is the file path and pattern of the normalized clusters from preprocess.py. summary_file can be found within the CPPTRAJ clustering output.
-        trim_frac is the fraction of outliers user wish to trim from the dominant c0 cluster. n_clusters is the number of cluster the user wish to analyze, None will be all clusters. 
-        weighted is when similarity values are weighted by the number of frames of the cluster and this is stored in the summary file from clustering.
-        n_ary and weight define the similar metric the user wishes to use. All options found in sim_modules_vector under gen_sim_dict.
+    def __init__(self, cluster_folder=None, summary_file=None, trim_frac=None, n_clusters=None, frame_weighted_sim=True, n_ary='RR', weight='nw'):
+        """ Initializes a new instance of the SimilarityCalculator class.
         
+        Args:
+            cluster_folder (str): The path to the folder containing the normalized cluster files (`preprocess.py`).
+            summary_file (str): The path to the summary file containing the number of frames for each cluster (CPPTRAJ clusteringoutput).
+            trim_frac (float): The fraction of outliers to trim from the dominant cluster, c0.
+            n_clusters (int): The number of clusters to analyze, None for all clusters.
+            frame_weighted_sim (bool): Whether to weight similarity values by the number of frames.
+            n_ary (str): The similarity metric to use for comparing clusters. 
+            weight (str): The weighting scheme to use for comparing clusters.
+
+        Returns:
+            None.
+            
+        Notes:
+            - Options for n_ary and weight under `sim_modules_vector.py`.
         """
+        
         self.c0 = np.genfromtxt(f"{cluster_folder}/normed_clusttraj.c0")
         if trim_frac:
             self.c0 = trim_outliers(self.c0, trim_frac=trim_frac, n_ary=n_ary, weight=weight)
         self.input_files = sorted(glob.glob(f"{cluster_folder}/normed_clusttraj.c*"), key=lambda x: int(re.findall("\d+", x)[0]))[1:]
         self.summary_file = summary_file
         self.n_clusters = n_clusters
-        self.weighted = weighted
+        self.frame_weighted_sim = frame_weighted_sim
         self.n_ary = n_ary
         self.weight = weight
         self.sims = {}
     
     def calculate_pairwise(self):
+        """ Calculates pairwise similarity between each cluster and all other clusters.
+
+        Notes:
+            For each cluster file, loads the data and calculates the similarity score with the dominant c0 cluster.
+            The similarity score is calculated as the average of pairwise similarity values between each frame in the cluster and the dominant c0 cluster.
+            The similarity metric used is defined by the n_ary parameter and can be either 'RR' or 'SM'.
+        
+        Returns:
+            If `frame_weighted_sim` is `False`, returns a dictionary containing the unweighted average similarity values between each pair of clusters.
+            If `frame_weighted_sim` is `True`, returns the result of the `weight_dict` function, which applies a frame-weighting factor to the similarity values.
+        """
         for each, file in enumerate(self.input_files):
             ck = np.genfromtxt(file)
             self.sims[each] = {}
@@ -63,9 +84,9 @@ class SimilarityCalculator:
                 self.sims[each][f"f{i}"] = avg
 
         nw_dict = sort_dict_add_avg(self.sims)
-        if self.weighted is False:
+        if self.frame_weighted_sim is False:
             return nw_dict
-        if self.weighted is True:
+        if self.frame_weighted_sim is True:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
 
     def calculate_union(self):
@@ -81,9 +102,9 @@ class SimilarityCalculator:
                 self.sims[each][f"f{i}"] = index[self.weight][self.n_ary]
         
         nw_dict = sort_dict_add_avg(self.sims)
-        if self.weighted is False:
+        if self.frame_weighted_sim is False:
             return nw_dict
-        if self.weighted is True:
+        if self.frame_weighted_sim is True:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
 
     def calculate_sims(self, index_func):
@@ -106,16 +127,16 @@ class SimilarityCalculator:
     
     def calculate_medoid(self):
         nw_dict = self.calculate_sims(calculate_medoid)
-        if self.weighted is False:
+        if self.frame_weighted_sim is False:
             return nw_dict
-        if self.weighted is True:
+        if self.frame_weighted_sim is True:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
         
     def calculate_outlier(self):
         nw_dict = self.calculate_sims(calculate_outlier)
-        if self.weighted is False:
+        if self.frame_weighted_sim is False:
             return nw_dict
-        if self.weighted is True:
+        if self.frame_weighted_sim is True:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
 
 def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw'):
@@ -136,7 +157,7 @@ def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw'):
     return total_data
 
 def weight_dict(file_path=None, summary_file=None, dict=None, n_clusters=None):
-    """ Similarity values are weighted by the number of frames of the cluster and this is stored in the summary file from clustering. """
+    """ Similarity values are frame_weighted_sim by the number of frames of the cluster and this is stored in the summary file from clustering. """
     if file_path is not None:
         with open(file_path, 'r') as file:
             dict = json.load(file)
