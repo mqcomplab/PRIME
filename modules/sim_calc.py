@@ -40,7 +40,7 @@ class SimilarityCalculator:
             None.
             
         Notes:
-            - Options for n_ary and weight under `sim_modules_vector.py`.
+            Options for n_ary and weight under `sim_modules_vector.py`.
         """
         
         self.c0 = np.genfromtxt(f"{cluster_folder}/normed_clusttraj.c0")
@@ -63,8 +63,10 @@ class SimilarityCalculator:
             The similarity metric used is defined by the n_ary parameter and can be either 'RR' or 'SM'.
         
         Returns:
-            If `frame_weighted_sim` is `False`, returns a dictionary containing the unweighted average similarity values between each pair of clusters.
-            If `frame_weighted_sim` is `True`, returns the result of the `weight_dict` function, which applies a frame-weighting factor to the similarity values.
+            If `frame_weighted_sim` returns `False`, 
+                nw_dict (dict): unweighted average similarity values.
+            If `frame_weighted_sim` returns `True`, 
+                w_dict (dict): calls `weight_dict` function to weight similarity values.
         """
         for each, file in enumerate(self.input_files):
             ck = np.genfromtxt(file)
@@ -90,6 +92,19 @@ class SimilarityCalculator:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
 
     def calculate_union(self):
+        """ Calculates the extended similarity between the union of frame in c0 and cluster k.
+
+        Notes:
+            For each cluster file, loads the data and calculates the extended similarity.
+            The similarity score is calculated as the union similarity between all frames in the cluster and the dominant c0 cluster.
+            The similarity metric used is defined by the n_ary parameter and can be either 'RR' or 'SM'.
+        
+        Returns:
+            If `frame_weighted_sim` returns `False`, 
+                nw_dict (dict): unweighted average similarity values.
+            If `frame_weighted_sim` returns `True`, 
+                w_dict (dict): calls `weight_dict` function to weight similarity values.
+        """
         for each, file in enumerate(self.input_files):
             ck = np.genfromtxt(file)
             self.sims[each] = {}
@@ -108,6 +123,18 @@ class SimilarityCalculator:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
 
     def calculate_sims(self, index_func):
+        """ Calculates similarity scores between each cluster and the dominant c0 cluster.
+
+        Args:
+            index_func (func): a function that takes a 2D numpy array of fingerprints and returns the index of the 
+                        medoid frame, based on the similarity indices used.
+
+        Returns:
+            nw_dict (dict): A dictionary containing the average similarity between each pair of clusters.
+        
+        Notes:
+            This function should NOT be used directly. It is called by the `calculate_pairwise` and `calculate_union` functions.
+        """
         for each, file in enumerate(self.input_files):
             ck = np.genfromtxt(file)
             index = index_func(ck, n_ary=self.n_ary, weight=self.weight)
@@ -125,14 +152,42 @@ class SimilarityCalculator:
         nw_dict = sort_dict_add_avg(self.sims)
         return nw_dict
     
-    def calculate_medoid(self):
+    def calculate_medoid_c0(self):
+        """ Calculates the pairwise similarity between every frame in c0 and the medoid of each cluster.
+
+        Notes:
+            Calculate the medoid of each cluster using the `calculate_medoid` function from `sim_modules_vector`.
+            The pairwise similarity value between each frame in c0 and the medoid of each cluster is calculated 
+            using similarity indices.
+            Calls the `calculate_sims` function to calculate the similarity values.
+        
+        Returns:
+            If `frame_weighted_sim` returns `False`, 
+                nw_dict (dict): unweighted average similarity values.
+            If `frame_weighted_sim` returns `True`, 
+                w_dict (dict): calls `weight_dict` function to weight similarity values.
+        """
         nw_dict = self.calculate_sims(calculate_medoid)
         if self.frame_weighted_sim is False:
             return nw_dict
         if self.frame_weighted_sim is True:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
         
-    def calculate_outlier(self):
+    def calculate_outlier_c0(self):
+        """ Calculates the pairwise similarity between every frame in c0 and the outlier of each cluster.
+
+        Notes:
+            Calculate the outlier of each cluster using the `calculate_outlier` function from `sim_modules_vector`.
+            The pairwise similarity value between each frame in c0 and the outlier of each cluster is calculated 
+            using similarity indices.
+            Calls the `calculate_sims` function to calculate the similarity values.
+        
+        Returns:
+            If `frame_weighted_sim` returns `False`, 
+                nw_dict (dict): unweighted average similarity values.
+            If `frame_weighted_sim` returns `True`, 
+                w_dict (dict): calls `weight_dict` function to weight similarity values.
+        """
         nw_dict = self.calculate_sims(calculate_outlier)
         if self.frame_weighted_sim is False:
             return nw_dict
@@ -140,7 +195,19 @@ class SimilarityCalculator:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
 
 def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw'):
-    """ Function will trim a desired percentage of outliers from the dataset by calculating largest complement similarity. """
+    """ Trims a desired percentage of outliers (most dissimilar) from the dataset by calculating largest complement similarity.
+
+    Args:
+        total_data (numpy.ndarray): A 2D array, containing the data to be trimmed.
+        trim_frac (float): The fraction of outliers to be removed. Must be between 0 and 1. Defaults to 0.1.
+        n_ary (str): The similarity metric to be used. Must be either 'RR' or 'SM'. Defaults to 'RR'.
+        weight (str): The weight function to be used. Must be either 'nw' or 'fraction'. Defaults to 'nw'.
+
+    Returns:
+        total_data (numpy.ndarray): A 2D array, with the same values as `total_data`, except that a fraction
+        `trim_frac` of the rows have been replaced with NaNs, corresponding to the rows with the highest complement
+        similarity scores.
+    """
     n_fingerprints = len(total_data)
     c_total = np.sum(total_data, axis = 0)
     comp_sims = []
@@ -152,8 +219,8 @@ def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw'):
     comp_sims = np.array(comp_sims)
     cutoff = int(np.floor(n_fingerprints * float(trim_frac)))
     highest_indices = np.argpartition(-comp_sims, cutoff)[:cutoff]
-    total_data = np.delete(total_data, highest_indices, axis=0)
-    # total_data[highest_indices] = np.nan
+    # total_data = np.delete(total_data, highest_indices, axis=0)
+    total_data[highest_indices] = np.nan
     return total_data
 
 def weight_dict(file_path=None, summary_file=None, dict=None, n_clusters=None):

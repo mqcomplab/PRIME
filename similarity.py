@@ -6,7 +6,7 @@ import time
 # Parse command-line arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('-m', '--method', help='Method to use for similarity calculation. \
-                    (pairwise, union, medoid, outlier)', required=True)
+                    (Options: pairwise, union, medoid_c0, outlier_c0)', required=True)
 parser.add_argument('-n', '--n_clusters', type=int, help='Number of clusters for analysis', 
                     required=True)
 parser.add_argument('-i', '--index', help='Similarity Index to use (e.g. RR or SM)', 
