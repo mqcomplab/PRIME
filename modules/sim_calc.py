@@ -261,8 +261,7 @@ def weight_dict(file_path=None, summary_file=None, dict=None, n_clusters=None):
     return w_dict
 
 def sort_dict_add_avg(dict):
-    """
-    Sorts the dictionary by the key and attaches the average value to the end of each key.
+    """ Sorts the dictionary by the key and attaches the average value to the end of each key.
 
     Args:
         dict (dict): A dictionary containing the similarity values.
