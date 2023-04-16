@@ -5,12 +5,33 @@ import json
 import glob
 
 class SimilarityCalculator:
+    """ A class to calculate the similarity between clusters.
+    
+    Attributes:
+        c0 (numpy.ndarray): The dominant cluster.
+        input_files (list): The list of cluster files.
+        summary_file (str): The path to the summary file.
+        n_clusters (int): The number of clusters to analyze.
+        weighted (bool): Whether to weight the similarity values by the number of frames in the cluster.
+        n_ary (str): The n_ary similarity metric to use.
+        weight (str): The weight to use for the similarity metric.
+    
+    Methods:
+        calculate_pairwise: Calculates the similarity between the dominant cluster and all other clusters.
+        calculate_union: Calculates the similarity between the dominant cluster and the union of all other clusters.
+        calculate_sims: Calculates the similarity between the dominant cluster and the cluster with the highest similarity to the dominant cluster.
+        calculate_medoid: Calculates the similarity between the dominant cluster and the cluster with the lowest average distance to the dominant cluster.
+        calculate_outliers: Calculates the similarity between the dominant cluster and the cluster with the highest average distance to the dominant cluster.
+    """
+    
     def __init__(self, cluster_folder=None, summary_file=None, trim_frac=None, n_clusters=None, weighted=True, n_ary='RR', weight='nw'):
         """
+                
         cluster_file_pattern is the file path and pattern of the normalized clusters from preprocess.py. summary_file can be found within the CPPTRAJ clustering output.
         trim_frac is the fraction of outliers user wish to trim from the dominant c0 cluster. n_clusters is the number of cluster the user wish to analyze, None will be all clusters. 
         weighted is when similarity values are weighted by the number of frames of the cluster and this is stored in the summary file from clustering.
         n_ary and weight define the similar metric the user wishes to use. All options found in sim_modules_vector under gen_sim_dict.
+        
         """
         self.c0 = np.genfromtxt(f"{cluster_folder}/normed_clusttraj.c0")
         if trim_frac:
@@ -154,5 +175,3 @@ def sort_dict_add_avg(dict):
         nw_dict[k].append(average)
     
     return nw_dict
-
-
