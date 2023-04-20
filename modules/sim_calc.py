@@ -221,9 +221,7 @@ def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw'):
         `trim_frac` of the rows have been replaced with NaNs, corresponding to the rows with the highest complement
         similarity scores.
     """
-    if not trim_frac:
-        pass
-    elif 0 < trim_frac < 1:
+    if 0 < trim_frac < 1:
         cutoff = int(np.floor(n_fingerprints * float(trim_frac)))
     elif isinstance(trim_frac, int):
         cutoff = trim_frac
@@ -237,7 +235,6 @@ def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw'):
         sim_index = Indices[weight][n_ary]
         comp_sims.append(sim_index)
     comp_sims = np.array(comp_sims)
-    
     highest_indices = np.argpartition(-comp_sims, cutoff)[:cutoff]
     # total_data = np.delete(total_data, highest_indices, axis=0)
     total_data[highest_indices] = np.nan
