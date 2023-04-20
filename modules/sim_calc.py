@@ -207,7 +207,8 @@ class SimilarityCalculator:
                                dict=nw_dict, n_clusters=self.n_clusters)
 
 def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw'):
-    """ Trims a desired percentage of outliers (most dissimilar) from the dataset by calculating largest complement similarity.
+    """ Trims a desired percentage of outliers (most dissimilar) from the dataset 
+    by calculating largest complement similarity.
 
     Args:
         total_data (numpy.ndarray): A 2D array, containing the data to be trimmed.
@@ -220,6 +221,13 @@ def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw'):
         `trim_frac` of the rows have been replaced with NaNs, corresponding to the rows with the highest complement
         similarity scores.
     """
+    if not trim_frac:
+        pass
+    elif 0 < trim_frac < 1:
+        cutoff = int(np.floor(n_fingerprints * float(trim_frac)))
+    elif isinstance(trim_frac, int):
+        cutoff = trim_frac
+    
     n_fingerprints = len(total_data)
     c_total = np.sum(total_data, axis = 0)
     comp_sims = []
@@ -229,7 +237,7 @@ def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw'):
         sim_index = Indices[weight][n_ary]
         comp_sims.append(sim_index)
     comp_sims = np.array(comp_sims)
-    cutoff = int(np.floor(n_fingerprints * float(trim_frac)))
+    
     highest_indices = np.argpartition(-comp_sims, cutoff)[:cutoff]
     # total_data = np.delete(total_data, highest_indices, axis=0)
     total_data[highest_indices] = np.nan
