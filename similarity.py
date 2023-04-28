@@ -33,7 +33,7 @@ lib = mod.FrameSimilarity(cluster_folder=args.cluster_folder, summary_file=args.
                                n_ary=args.index, weighted_by_frames=args.weighted_by_frames)
 method_func = getattr(lib, f'calculate_{args.method}')
 new_sims = method_func()
-if args.weighted_by_frames is True:
+if args.weighted_by_frames:
     w = "w"
 else:
     w = "nw"
