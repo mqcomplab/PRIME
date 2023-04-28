@@ -6,7 +6,7 @@ import json
 import re
 
 def calculate_max_key(dict):
-    """ Find the key with the max value """
+    """Find the key with the max value"""
     max_val = float('-inf')
     max_key = None
 

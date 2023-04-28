@@ -3,6 +3,11 @@ import modules as mod
 import json
 import time
 
+"""A script to calculate the similarity between clusters using different methods.
+Example usage:
+>>> python similarity.py -m medoid -n 11 -i RR
+"""
+
 # Parse command-line arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('-m', '--method', help='Method to use for similarity calculation. \
@@ -44,5 +49,3 @@ else:
         file.write(json.dumps(new_sims, indent=4))
     end = time.perf_counter()
     print(f"{w}_{args.method}_{args.index}: Finished in {round(end-start,2)} second")
-    
-# python similarity.py -m medoid -n 11 -i RR

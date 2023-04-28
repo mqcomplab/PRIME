@@ -2,7 +2,7 @@ import numpy as np
 import random
 import glob
 import pickle
-from math import log
+from math import log, ceil
 from scipy.stats import rankdata
 import time
 

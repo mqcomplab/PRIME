@@ -27,11 +27,11 @@ class SimilarityCalculator:
             the cluster with the lowest average distance to the dominant cluster.
         calculate_outliers: Calculates the similarity between the top cluster and 
             the cluster with the highest average distance to the dominant cluster.
+        _perform_calculation: A helper function for `calculate_medoid_c0` and `calculate_outlier_c0`.
     """
-    
     def __init__(self, cluster_folder=None, summary_file=None, trim_frac=None, 
                  n_clusters=None, frame_weighted_sim=True, n_ary='RR', weight='nw'):
-        """Initializes a new instance of the SimilarityCalculator class.
+        """Initializes instances for the SimilarityCalculator class.
         
         Args:
             cluster_folder (str): The path to the folder containing the normalized 
@@ -49,7 +49,7 @@ class SimilarityCalculator:
             None.
             
         Notes:
-            Options for n_ary and weight under `esim.py`.
+            Options for `n_ary` and `weight` under `esim.py`.
         """
         self.c0 = np.genfromtxt(f"{cluster_folder}/normed_clusttraj.c0")
         if trim_frac:
@@ -87,7 +87,7 @@ class SimilarityCalculator:
                 for j, y in enumerate(ck):
                     c_total = np.sum(np.array([x, y]), axis=0)
                     sim_total += SimilarityIndex(c_total, n_objects=2, c_threshold=None, n_ary=self.n_ary, 
-                                            w_factor='fraction', weight=self.weight, return_dict=False)()
+                                                 w_factor='fraction', weight=self.weight, return_dict=False)()
                 avg = sim_total / len(ck)
                 if f"f{i}" not in self.sims[each]:
                     self.sims[each][f"f{i}"] = []
@@ -122,7 +122,7 @@ class SimilarityCalculator:
                 c_total = np.sum(ck, axis=0) + x
                 n_objects = len(ck) + 1
                 index = SimilarityIndex(c_total, n_objects=n_objects, c_threshold=None, n_ary=self.n_ary, 
-                                            w_factor='fraction', weight=self.weight, return_dict=False)()
+                                        w_factor='fraction', weight=self.weight, return_dict=False)()
                 if f"f{i}" not in self.sims[each]:
                     self.sims[each][f"f{i}"] = []
                 self.sims[each][f"f{i}"] = index[self.weight][self.n_ary]
@@ -133,8 +133,52 @@ class SimilarityCalculator:
         if self.frame_weighted_sim:
             return weight_dict(file_path=None, summary_file=self.summary_file, 
                                dict=nw_dict, n_clusters=self.n_clusters)
+    
+    def calculate_medoid_c0(self):
+        """Calculates the pairwise similarity between every frame in c0 and the medoid of each cluster.
 
-    def perform_calculation(self, index_func):
+        Notes:
+            Calculate the medoid of each cluster using the `calculate_medoid` function from `sim_modules_vector`.
+            The pairwise similarity value between each frame in c0 and the medoid of each cluster is calculated 
+            using similarity indices.
+            Calls the `_perform_calculation` aux function.
+        
+        Returns:
+            If `frame_weighted_sim` returns `False`, 
+                nw_dict (dict): unweighted average similarity values.
+            If `frame_weighted_sim` returns `True`, 
+                w_dict (dict): calls `weight_dict` function to weight similarity values.
+        """
+        nw_dict = self._perform_calculation(calculate_medoid)
+        if not self.frame_weighted_sim:
+            return nw_dict
+        if self.frame_weighted_sim:
+            return weight_dict(file_path=None, summary_file=self.summary_file, 
+                               dict=nw_dict, n_clusters=self.n_clusters)
+        
+    def calculate_outlier_c0(self):
+        """Calculates the pairwise similarity between every frame in c0 and the outlier of each cluster.
+
+        Notes:
+            Calculate the outlier of each cluster using the `calculate_outlier` function from `sim_modules_vector`.
+            The pairwise similarity value between each frame in c0 and the outlier of each cluster is calculated 
+            using similarity indices.
+            Calls the `_perform_calculation` aux function.
+        
+        Returns:
+            If `frame_weighted_sim` returns `False`, 
+                nw_dict (dict): unweighted average similarity values.
+            If `frame_weighted_sim` returns `True`, 
+                w_dict (dict): calls `weight_dict` function to weight similarity values.
+        """
+        nw_dict = self._perform_calculation(calculate_outlier)
+        if not self.frame_weighted_sim:
+            return nw_dict
+        if self.frame_weighted_sim:
+            return weight_dict(file_path=None, summary_file=self.summary_file, 
+                               dict=nw_dict, n_clusters=self.n_clusters)
+
+    def _perform_calculation(self, index_func):
         """A helper function for `calculate_medoid_c0` and `calculate_outlier_c0`.
 
         Args:
@@ -161,53 +205,9 @@ class SimilarityCalculator:
                 self.sims[each][f"f{i}"] = index
         nw_dict = format_dict(self.sims)
         return nw_dict
-    
-    def calculate_medoid_c0(self):
-        """Calculates the pairwise similarity between every frame in c0 and the medoid of each cluster.
-
-        Notes:
-            Calculate the medoid of each cluster using the `calculate_medoid` function from `sim_modules_vector`.
-            The pairwise similarity value between each frame in c0 and the medoid of each cluster is calculated 
-            using similarity indices.
-            Calls the `calculate_sims` function to calculate the similarity values.
-        
-        Returns:
-            If `frame_weighted_sim` returns `False`, 
-                nw_dict (dict): unweighted average similarity values.
-            If `frame_weighted_sim` returns `True`, 
-                w_dict (dict): calls `weight_dict` function to weight similarity values.
-        """
-        nw_dict = self.perform_calculation(calculate_medoid)
-        if not self.frame_weighted_sim:
-            return nw_dict
-        if self.frame_weighted_sim:
-            return weight_dict(file_path=None, summary_file=self.summary_file, 
-                               dict=nw_dict, n_clusters=self.n_clusters)
-        
-    def calculate_outlier_c0(self):
-        """ Calculates the pairwise similarity between every frame in c0 and the outlier of each cluster.
-
-        Notes:
-            Calculate the outlier of each cluster using the `calculate_outlier` function from `sim_modules_vector`.
-            The pairwise similarity value between each frame in c0 and the outlier of each cluster is calculated 
-            using similarity indices.
-            Calls the `calculate_sims` function to calculate the similarity values.
-        
-        Returns:
-            If `frame_weighted_sim` returns `False`, 
-                nw_dict (dict): unweighted average similarity values.
-            If `frame_weighted_sim` returns `True`, 
-                w_dict (dict): calls `weight_dict` function to weight similarity values.
-        """
-        nw_dict = self.perform_calculation(calculate_outlier)
-        if not self.frame_weighted_sim:
-            return nw_dict
-        if self.frame_weighted_sim:
-            return weight_dict(file_path=None, summary_file=self.summary_file, 
-                               dict=nw_dict, n_clusters=self.n_clusters)
 
 def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw'):
-    """ Trims a desired percentage of outliers (most dissimilar) from the dataset 
+    """Trims a desired percentage of outliers (most dissimilar) from the dataset 
     by calculating largest complement similarity.
 
     Args:
@@ -231,17 +231,17 @@ def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw'):
     comp_sims = []
     for i, pixel in enumerate(total_data):
         c_total_i = c_total - total_data[i]
-        Indices = gen_sim_dict(c_total_i, n_fingerprints - 1)
+        Indices = SimilarityCalculator(c_total_i, n_fingerprints - 1, c_threshold=None, n_ary=n_ary, 
+                                       w_factor='fraction', weight=weight, return_dict=False)()
         sim_index = Indices[weight][n_ary]
         comp_sims.append(sim_index)
     comp_sims = np.array(comp_sims)
     highest_indices = np.argpartition(-comp_sims, cutoff)[:cutoff]
-    # total_data = np.delete(total_data, highest_indices, axis=0)
     total_data[highest_indices] = np.nan
     return total_data
 
 def weight_dict(file_path=None, summary_file=None, dict=None, n_clusters=None):
-    """ Calculates frame-weighted similarity values by the number of frames in each cluster.
+    """Calculates frame-weighted similarity values by the number of frames in each cluster.
 
     Args:
         file_path (str): Path to the json file containing the unweighted similarity values between each pair of clusters.
@@ -274,17 +274,16 @@ def weight_dict(file_path=None, summary_file=None, dict=None, n_clusters=None):
     for k in w_dict:
         average = sum(w_dict[k]) / len(w_dict[k])
         w_dict[k].append(average)
-
     return w_dict
 
 def format_dict(dict):
-    """ Sorts the dictionary by the key and attaches the average value to the end of each key.
+    """Sorts dict to have frame # as the key and attaches the average value to the end of each key.
 
     Args:
         dict (dict): A dictionary containing the similarity values.
 
     Returns:
-        sorted_dict (dict): Sorted by the keys with the average value attached to the end of each key.
+        dict: Sorted by the keys with the average value attached to the end of each key.
     """
     sorted_dict = {}
     for i in sorted(dict):
