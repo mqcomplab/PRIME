@@ -11,14 +11,14 @@ Example usage:
 # Parse command-line arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('-m', '--method', help='Method to use for similarity calculation. \
-                    (Options: pairwise, union, medoid_c0, outlier_c0)', required=True)
+                    (pairwise, union, medoid, outlier)', required=True)
 parser.add_argument('-n', '--n_clusters', type=int, help='Number of clusters for analysis', 
                     required=True)
 parser.add_argument('-i', '--index', help='Similarity Index to use (e.g. RR or SM)', 
                     required=True)
 parser.add_argument('-t', '--trim_frac', type=float, help='Fraction of outliers to trim. \
                     (e.g. 0.1, default: None)', default=None)
-parser.add_argument('-w', '--weighted', help='Weighing clusters by frames it contains. \
+parser.add_argument('-w', '--weighted_by_frames', help='Weighing clusters by frames it contains. \
                     (default: True)', default=True)
 parser.add_argument('-d', '--cluster_folder', help='Location of the cluster files directory', 
                     default="new_clusters/")
@@ -28,12 +28,12 @@ args = parser.parse_args()
 
 # Calculate similarities
 start = time.perf_counter()
-lib = mod.SimilarityCalculator(cluster_folder=args.cluster_folder, summary_file=args.summary_file, 
+lib = mod.FrameSimilarity(cluster_folder=args.cluster_folder, summary_file=args.summary_file, 
                                n_clusters=args.n_clusters, trim_frac=args.trim_frac, 
-                               n_ary=args.index, weighted=args.weighted)
+                               n_ary=args.index, weighted_by_frames=args.weighted_by_frames)
 method_func = getattr(lib, f'calculate_{args.method}')
 new_sims = method_func()
-if args.weighted is True:
+if args.weighted_by_frames is True:
     w = "w"
 else:
     w = "nw"
