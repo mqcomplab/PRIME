@@ -20,7 +20,7 @@ def graph_rep_frames(folder_pattern="[Nn]*",weighted=True, n_ary="RR", trim_frac
         t= ""
     
     # Dictionary for all RMSD results for each method.
-    data_dict = {"medoid_all": [], "medoid_c0": [], "pairwise": [], "union": [], "medoid": [], "outlier": []}
+    data_dict = {"medoid_all": [], "medoid_c0": [], "medoid_c0_trimmed": [], "pairwise": [], "union": [], "medoid": [], "outlier": []}
     for folder in input_folders:
         data = np.loadtxt(f"{folder}/rmsd.dat", usecols=1, skiprows=1)
         list = np.genfromtxt(f"{folder}/{w}rep_{n_ary}{t}.txt", delimiter=",")
@@ -29,8 +29,8 @@ def graph_rep_frames(folder_pattern="[Nn]*",weighted=True, n_ary="RR", trim_frac
             data_dict[key].append(data[selected_lines[i]])
     
     # Create new dictionary for rmsd(method) - rmsd(med_c0) values.
-    n_dict = {"medoid_all": [], "pairwise": [], "union": [], "medoid": [], "outlier": []}
-    for key in ["medoid_all", "pairwise", "union", "medoid", "outlier"]:
+    n_dict = {"medoid_all": [], "medoid_c0_trimmed": [], "pairwise": [], "union": [], "medoid": [], "outlier": []}
+    for key in ["medoid_all", "medoid_c0_trimmed", "pairwise", "union", "medoid", "outlier"]:
         n_dict[key] = [a_i - b_i for a_i, b_i in zip(data_dict[key], data_dict["medoid_c0"])]
     d_means = []
     for k in n_dict:
@@ -40,7 +40,7 @@ def graph_rep_frames(folder_pattern="[Nn]*",weighted=True, n_ary="RR", trim_frac
     # Plotting points for each system
     x_values = [r"$med_{c_{all}}$", r"$\langle sim(F_{c0}, F_k)\rangle$", r"$esim({F_{c0}}\cup C_k)$", r"$sim(F_{C_0}, med_{C_k})$", r"$sim(F_{C_0}, out_{C_k})$"]
     plt.ylabel(r"$\mathrm{\Delta \langle RMSD\rangle~(Å)}$")
-    new_ys = [n_dict["medoid_all"], n_dict["pairwise"], n_dict["union"], n_dict["medoid"], n_dict["outlier"]]
+    new_ys = [n_dict["medoid_all"], n_dict["medoid_c0_trimmed"], n_dict["pairwise"], n_dict["union"], n_dict["medoid"], n_dict["outlier"]]
     for x, y in zip(x_values, new_ys):
         for yi in y:
             c = '#00b5c5' if yi < 0 else '#c57300'
@@ -125,4 +125,3 @@ def graph_rep_frames_fracs(folder_pattern="[Nn]*",weighted=True, n_ary="RR", tri
     # Returning data dictionary if requested.
     if return_dict is not None:
         return n_dict
-

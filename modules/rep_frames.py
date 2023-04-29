@@ -1,5 +1,5 @@
 """This script aims to find the representative frame for each method below. """
-from modules.sim_modules_vector import calculate_medoid
+from modules.esim import calculate_medoid
 from modules.sim_calc import trim_outliers
 import numpy as np
 import json
@@ -29,12 +29,17 @@ def gen_method_max(weighted=True, trim=0.1, n_ary="RR", weight='nw', output_name
     elif trim is None:
         t= ""
     with open(f"{w}{output_name}_{n_ary}{t}.txt","w") as output:
-        output.write("# Frame number with max values by method: medoid_all, medoid_c0, pairwise, union, medoid, outlier\n")
+        output.write("# Frame number with max values by method: medoid_all, medoid_c0, medoid_c0(trimmed), pairwise, union, medoid, outlier\n")
         
+        # medoid_all
         c_all = np.genfromtxt("new_clusters/normed_data.txt")
         output.write(f"{calculate_medoid(c_all, n_ary=n_ary, weight=weight)}, ")
-
+        
+        # medoid_c0 (untrimmed)
         c0 = np.genfromtxt("new_clusters/normed_clusttraj.c0")
+        output.write(f"{calculate_medoid(c0, n_ary=n_ary, weight=weight)}, ")
+        
+        # medoid_c0 (trimmed)
         if trim is None:
             output.write(f"{calculate_medoid(c0, n_ary=n_ary, weight=weight)}, ")
         if trim is not None:
@@ -44,19 +49,22 @@ def gen_method_max(weighted=True, trim=0.1, n_ary="RR", weight='nw', output_name
             new_index = np.where((c0 == search).all(axis=1))[0]
             output.write(f"{new_index[0]}, ")
         
+        # pairwise
         with open(f"{w}pairwise_{n_ary}{t}.txt", "r") as file:
             pairwise = json.load(file)
         output.write(f"{calculate_max_key(pairwise)}, ")
 
+        # union
         with open(f"{w}union_{n_ary}{t}.txt", "r") as file:
             union = json.load(file)
         output.write(f"{calculate_max_key(union)}, ")
 
+        # medoid
         with open(f"{w}medoid_{n_ary}{t}.txt", "r") as file:
             medoid = json.load(file)
         output.write(f"{calculate_max_key(medoid)}, ")
         
+        # outlier
         with open(f"{w}outlier_{n_ary}{t}.txt", "r") as file:
             outlier = json.load(file)
         output.write(f"{calculate_max_key(outlier)}")
-
