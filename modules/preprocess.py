@@ -54,4 +54,4 @@ def read_cpptraj(break_line, min=None, max=None, normalize=False):
     if normalize is False:
         data = np.concatenate(frames_list, axis=0)
         return data
-
+    
