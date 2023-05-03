@@ -18,7 +18,9 @@ class Normalize:
             self.min = np.min(self.data)
             self.max = np.max(self.data)
         self.normed_data = (self.data - self.min) / (self.max - self.min)
-        self.c_total = np.sum(1 - np.abs(self.normed_data - np.mean(self.normed_data, axis=0)), axis=0)
+        self.esim_norm = 1 - np.abs(self.normed_data - np.mean(self.normed_data, axis=0))
+        #self.c_total = np.sum(1 - np.abs(self.normed_data - np.mean(self.normed_data, axis=0)), axis=0)
+        self.c_total = np.sum(self.normed_data, axis=0)
     def get_c_total(self):
         return self.c_total
     def get_normed_data(self):
