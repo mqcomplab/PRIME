@@ -27,6 +27,8 @@ class Normalize:
         return self.normed_data
     def get_min_max(self):
         return self.min, self.max
+    def get_esim_norm(self):
+        return self.esim_norm
 
 def read_cpptraj(break_line, min=None, max=None, normalize=False):
     """ Read CPPTRAJ files to ensure proper spacings for future post-processing """
