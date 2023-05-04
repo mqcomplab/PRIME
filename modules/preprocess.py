@@ -1,10 +1,30 @@
 import numpy as np
-from modules.sim_modules_vector import *
 from itertools import chain
 import re
 import glob
 
 class Normalize:
+    """Class for normalizing data.
+
+    Args:
+    file_path (str, optional): The file path of the input data. If provided, the data is read from
+                               the file. Defaults to None.
+    data (np.ndarray, optional): The input data as a numpy array. If provided, the file_path argument
+                                  is ignored. Defaults to None.
+    custom_min (float or None, optional): The minimum value to use for normalization. If not provided, 
+                                          the minimum value of the input data is used. Defaults to None.
+    custom_max (float or None, optional): The maximum value to use for normalization. If not provided, 
+                                          the maximum value of the input data is used. Defaults to None.
+
+    Attributes:
+    normed_data (np.ndarray): The normalized input data as a numpy array.
+    c_total (np.ndarray): The sum of the absolute difference of each data point from the mean along the 
+                          column axis of the normalized data.
+    esim_norm (np.ndarray): The element-wise similarity between each data point and the mean along the 
+                            column axis of the normalized data.
+    min (float): The minimum value of the input data.
+    max (float): The maximum value of the input data.
+    """    
     def __init__(self, file_path=None, data=None, custom_min=None, custom_max=None):
         if file_path is not None:
             self.file_path = file_path
@@ -19,8 +39,7 @@ class Normalize:
             self.max = np.max(self.data)
         self.normed_data = (self.data - self.min) / (self.max - self.min)
         self.esim_norm = 1 - np.abs(self.normed_data - np.mean(self.normed_data, axis=0))
-        #self.c_total = np.sum(1 - np.abs(self.normed_data - np.mean(self.normed_data, axis=0)), axis=0)
-        self.c_total = np.sum(self.normed_data, axis=0)
+        self.c_total = np.sum(1 - np.abs(self.normed_data - np.mean(self.normed_data, axis=0)), axis=0)
     def get_c_total(self):
         return self.c_total
     def get_normed_data(self):
@@ -31,7 +50,20 @@ class Normalize:
         return self.esim_norm
 
 def read_cpptraj(break_line, min=None, max=None, normalize=False):
-    """ Read CPPTRAJ files to ensure proper spacings for future post-processing """
+    """Read CPPTRAJ files to convert to numpy ndarray formatting and normalize the data.
+    
+    Args:
+    break_line (int): The number of columns per line of the input file.
+    min (float or None, optional): The minimum value to use for normalization. If not provided, 
+                                    the minimum value of the input data is used. Defaults to None.
+    max (float or None, optional): The maximum value to use for normalization. If not provided, 
+                                    the maximum value of the input data is used. Defaults to None.
+    normalize (bool, optional): Whether to normalize the input data. If True, the data is 
+                                normalized to the range [0, 1]. Defaults to False.
+                              
+    Returns:
+    np.ndarray: The concatenated input data as a numpy array.
+    """
     input_files = sorted(glob.glob("clusttraj.c*"), key=lambda x: int(re.findall("\d+", x)[0]))
     break_line = break_line
     frames_list = []
@@ -54,4 +86,3 @@ def read_cpptraj(break_line, min=None, max=None, normalize=False):
     if normalize is False:
         data = np.concatenate(frames_list, axis=0)
         return data
-    

@@ -14,7 +14,7 @@ args = parser.parse_args()
 
 data = mod.read_cpptraj(args.break_line)
 norm = mod.Normalize(data=data)
-normed_data = norm.get_normed_data()
+normed_data = norm.get_esim_norm()
 min, max = norm.get_min_max()
 np.savetxt("normed_data.txt", normed_data)
 
