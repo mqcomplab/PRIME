@@ -1,4 +1,4 @@
-"""This script aims to find the representative frame for each method below."""
+"This script aims to find the representative frame for each method below."""
 from modules.esim import calculate_medoid
 from modules.sim_calc import trim_outliers
 import numpy as np
