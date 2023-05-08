@@ -88,9 +88,9 @@ class FrameSimilarity:
                 self.sims[each][f"f{i}"] = avg
 
         nw_dict = _format_dict(self.sims)
-        if self.weighted_by_frames is False:
+        if not self.weighted_by_frames:
             return nw_dict
-        if self.weighted_by_frames is True:
+        elif self.weighted_by_frames:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
 
     def calculate_union(self):
@@ -121,9 +121,9 @@ class FrameSimilarity:
                 self.sims[each][f"f{i}"] = index
         
         nw_dict = _format_dict(self.sims)
-        if self.weighted_by_frames is False:
+        if not self.weighted_by_frames:
             return nw_dict
-        if self.weighted_by_frames is True:
+        elif self.weighted_by_frames:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
 
     def _perform_calculation(self, index_func):
@@ -170,9 +170,9 @@ class FrameSimilarity:
                 w_dict (dict): calls `weight_dict` function to weight similarity values.
         """
         nw_dict = self._perform_calculation(calculate_medoid)
-        if self.weighted_by_frames is False:
+        if not self.weighted_by_frames:
             return nw_dict
-        if self.weighted_by_frames is True:
+        if self.weighted_by_frames:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
         
     def calculate_outlier(self):
@@ -191,12 +191,12 @@ class FrameSimilarity:
                 w_dict (dict): calls `weight_dict` function to weight similarity values.
         """
         nw_dict = self._perform_calculation(calculate_outlier)
-        if self.weighted_by_frames is False:
+        if not self.weighted_by_frames:
             return nw_dict
-        if self.weighted_by_frames is True:
+        if self.weighted_by_frames:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
 
-def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw'):
+def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw', removal='nan'):
     """Trims a desired percentage of outliers (most dissimilar) from the dataset 
     by calculating largest complement similarity.
 
@@ -222,8 +222,10 @@ def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw'):
     comp_sims = np.array(comp_sims)
     cutoff = int(np.floor(n_fingerprints * float(trim_frac)))
     highest_indices = np.argpartition(-comp_sims, cutoff)[:cutoff]
-    total_data = np.delete(total_data, highest_indices, axis=0)
-    # total_data[highest_indices] = np.nan
+    if removal == 'nan':
+        total_data[highest_indices] = np.nan
+    elif removal == 'delete':
+        total_data = np.delete(total_data, highest_indices, axis=0)
     return total_data
 
 def weight_dict(file_path=None, summary_file=None, dict=None, n_clusters=None):
