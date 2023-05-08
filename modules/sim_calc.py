@@ -134,10 +134,6 @@ class FrameSimilarity:
 
         Returns:
             dict: A dictionary containing the average similarity between each pair of clusters.
-        
-        Notes:
-            This function should NOT be used directly. It is called by the
-                `calculate_medoid` and `calculate_outlier functions`.
         """
         for each, file in enumerate(self.input_files):
             ck = np.genfromtxt(file)
@@ -158,7 +154,7 @@ class FrameSimilarity:
         """Calculates the pairwise similarity between every frame in c0 and the medoid of each cluster.
 
         Notes:
-            Calculate the medoid of each cluster using the `calculate_medoid` function from `sim_modules_vector`.
+            Calculate the medoid of each cluster using the `calculate_medoid` function from `esim`.
             The pairwise similarity value between each frame in c0 and the medoid of each cluster is calculated 
             using similarity indices.
             Calls the `_perform_calculation` aux function.
@@ -247,7 +243,7 @@ def weight_dict(file_path=None, summary_file=None, dict=None, n_clusters=None):
     for key in dict:
         dict[key].pop()
     
-    num = np.loadtxt(summary_file, unpack = True, usecols=(1), skiprows=(1))
+    num = np.loadtxt(summary_file, unpack=True, usecols=(1), skiprows=(1))
     if n_clusters:
         num = num[0:n_clusters]
     w_sum = np.sum(num, axis=0)
