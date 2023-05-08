@@ -5,7 +5,7 @@ import json
 import glob
 
 class FrameSimilarity:
-    """ A class to calculate the similarity between clusters.
+    """A class to calculate the similarity between clusters.
     
     Attributes:
         c0 (numpy.ndarray): The dominant cluster.
@@ -19,13 +19,13 @@ class FrameSimilarity:
     Methods:
         calculate_pairwise: Calculates the similarity between the dominant cluster and all other clusters.
         calculate_union: Calculates the similarity between the dominant cluster and the union of all other clusters.
-        _perform_calculation: Calculates the similarity between the dominant cluster and the cluster with the highest similarity to the dominant cluster.
+        _perform_calculation: Auxiliary function to calculate the similarity between the dominant cluster and a single cluster.
         calculate_medoid: Calculates the similarity between the dominant cluster and the cluster with the lowest average distance to the dominant cluster.
         calculate_outliers: Calculates the similarity between the dominant cluster and the cluster with the highest average distance to the dominant cluster.
     """
     
     def __init__(self, cluster_folder=None, summary_file=None, trim_frac=None, n_clusters=None, weighted_by_frames=True, n_ary='RR', weight='nw'):
-        """Initializes instances for the SimilarityCalculator class.
+        """Initializes instances for the FrameSimilarity class.
         
         Args:
             cluster_folder (str): The path to the folder containing the normalized 
@@ -127,17 +127,17 @@ class FrameSimilarity:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
 
     def _perform_calculation(self, index_func):
-        """A helper function for `calculate_medoid_c0` and `calculate_outlier_c0`.
+        """Auxillary function for `calculate_medoid` and `calculate_outlier`.
 
         Args:
-            index_func (func): `calculate_medoid_c0` or `calculate_outlier_c0`.
+            index_func (func): `calculate_medoid` or `calculate_outlier`.
 
         Returns:
-            nw_dict (dict): A dictionary containing the average similarity between each pair of clusters.
+            dict: A dictionary containing the average similarity between each pair of clusters.
         
         Notes:
             This function should NOT be used directly. It is called by the
-                `calculate_medoid_c0` and `calculate_outlier_c0 functions`.
+                `calculate_medoid` and `calculate_outlier functions`.
         """
         for each, file in enumerate(self.input_files):
             ck = np.genfromtxt(file)
@@ -172,17 +172,17 @@ class FrameSimilarity:
         nw_dict = self._perform_calculation(calculate_medoid)
         if not self.weighted_by_frames:
             return nw_dict
-        if self.weighted_by_frames:
+        elif self.weighted_by_frames:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
         
     def calculate_outlier(self):
         """Calculates the pairwise similarity between every frame in c0 and the outlier of each cluster.
 
         Notes:
-            Calculate the outlier of each cluster using the `calculate_outlier` function from `sim_modules_vector`.
+            Calculate the outlier of each cluster using the `calculate_outlier` function from `esim`.
             The pairwise similarity value between each frame in c0 and the outlier of each cluster is calculated 
             using similarity indices.
-            Calls the `_perform_calculation` aux function.
+            Calls the `_perform_calculation` auxillary function.
         
         Returns:
             If `frame_weighted_sim` returns `False`, 
@@ -193,7 +193,7 @@ class FrameSimilarity:
         nw_dict = self._perform_calculation(calculate_outlier)
         if not self.weighted_by_frames:
             return nw_dict
-        if self.weighted_by_frames:
+        elif self.weighted_by_frames:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
 
 def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw', removal='nan'):
@@ -207,9 +207,8 @@ def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw', removal='n
         weight (str): The weight function to be used. Must be either 'nw' or 'fraction'. Defaults to 'nw'.
 
     Returns:
-        total_data (numpy.ndarray): A 2D array, with the same values as `total_data`, except that a fraction
-        `trim_frac` of the rows have been replaced with NaNs, corresponding to the rows with the highest complement
-        similarity scores.
+        numpy.ndarray: A 2D array, with a fraction trimed, corresponding 
+            to the rows with the highest complement similarity scores.
     """
     n_fingerprints = len(total_data)
     c_total = np.sum(total_data, axis = 0)
@@ -238,12 +237,12 @@ def weight_dict(file_path=None, summary_file=None, dict=None, n_clusters=None):
         n_clusters (int): The number of clusters to analyze. Default is `None`, analyze all clusters from summary file.
 
     Returns:
-        w_dict (dict): frame-weighted similarity values between each pair of clusters.
+        dict: frame-weighted similarity values between each pair of clusters.
     """
-    if file_path is not None:
+    if file_path:
         with open(file_path, 'r') as file:
             dict = json.load(file)
-    elif dict is not None:
+    elif dict:
         dict = dict
     for key in dict:
         dict[key].pop()
