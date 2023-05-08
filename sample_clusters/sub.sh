@@ -9,8 +9,8 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1    # number of CPU core to use
 #SBATCH --mem-per-cpu=100gb
-#SBATCH --account=group
-#SBATCH --qos=group
+#SBATCH --account=rmirandaquintana
+#SBATCH --qos=rmirandaquintana
 
 ml python
 

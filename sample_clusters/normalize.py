@@ -10,7 +10,7 @@ args = parser.parse_args()
 
 # Combine all the files into one files,
 # Normalize all data using the min-max normalization,
-# and getting the min and max for the whole dataset.
+# Get the min and max for the whole dataset.
 
 data = mod.read_cpptraj(args.break_line)
 norm = mod.Normalize(data=data)

@@ -29,7 +29,7 @@ class Normalize:
         if file_path:
             self.file_path = file_path
             self.data = np.genfromtxt(self.file_path)
-        elif data:
+        elif data is not None:
             self.data = data
         if custom_min and custom_max:
             self.min = custom_min
@@ -57,7 +57,7 @@ def read_cpptraj(break_line, min=None, max=None, normalize=False):
     """Read CPPTRAJ files to convert to numpy ndarray formatting and normalize the data.
     
     Args:
-    break_line (int): The number of columns per line of the input file.
+    break_line (int): The number of columns per line of the input file. (have to n-1 because ignore first line)
     min (float or None, optional): The minimum value to use for normalization. If not provided, 
                                     the minimum value of the input data is used. Defaults to None.
     max (float or None, optional): The maximum value to use for normalization. If not provided, 
