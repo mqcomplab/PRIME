@@ -19,7 +19,7 @@ def calculate_max_key(dict):
     max_key = int(re.findall(r'\d+', max_key)[0])
     return max_key
 
-def gen_method_max(weighted_by_frames=True, trim_frac=0.1, n_ary="RR", weight='nw', output_name="rep"):
+def gen_method_max(folder='nw', weighted_by_frames=True, trim_frac=0.1, n_ary='RR', weight='nw', output_name='rep'):
     """Generate the representative frame for each method.
 
     Args:
@@ -37,7 +37,7 @@ def gen_method_max(weighted_by_frames=True, trim_frac=0.1, n_ary="RR", weight='n
         t = f"_t{int(float(trim_frac) * 100)}"
     elif not trim_frac:
         t= ""
-    with open(f"w/{w}{output_name}_{n_ary}{t}.txt","w") as output:
+    with open(f"{folder}/{w}{output_name}_{n_ary}{t}.txt","w") as output:
         output.write("# Frame number with max values by method: medoid_all, medoid_c0, medoid_c0(trimmed), pairwise, union, medoid, outlier\n")
         
         # medoid_all
@@ -59,21 +59,21 @@ def gen_method_max(weighted_by_frames=True, trim_frac=0.1, n_ary="RR", weight='n
             output.write(f"{new_index[0]}, ")
         
         # pairwise
-        with open(f"w/{w}pairwise_{n_ary}{t}.txt", "r") as file:
+        with open(f"{folder}/{w}pairwise_{n_ary}{t}.txt", "r") as file:
             pairwise = json.load(file)
         output.write(f"{calculate_max_key(pairwise)}, ")
 
         # union
-        with open(f"w/{w}union_{n_ary}{t}.txt", "r") as file:
+        with open(f"{folder}/{w}union_{n_ary}{t}.txt", "r") as file:
             union = json.load(file)
         output.write(f"{calculate_max_key(union)}, ")
 
         # medoid
-        with open(f"w/{w}medoid_{n_ary}{t}.txt", "r") as file:
+        with open(f"{folder}/{w}medoid_{n_ary}{t}.txt", "r") as file:
             medoid = json.load(file)
         output.write(f"{calculate_max_key(medoid)}, ")
         
         # outlier
-        with open(f"w/{w}outlier_{n_ary}{t}.txt", "r") as file:
+        with open(f"{folder}/{w}outlier_{n_ary}{t}.txt", "r") as file:
             outlier = json.load(file)
         output.write(f"{calculate_max_key(outlier)}")
