@@ -16,8 +16,8 @@ How it works:
 
 Example usage:
 ----------------
-python normalize.py -b 5 -n v2
-python normalize.py -b 5 -n v3
+>>> python normalize.py -b 65 -n v2
+>>> python normalize.py -b 65 -n v3
 """
 import sys
 sys.path.insert(0, '../')
