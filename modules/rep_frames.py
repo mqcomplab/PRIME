@@ -51,8 +51,8 @@ def gen_method_max(weighted_by_frames=True, trim_frac=0.1, n_ary="RR", weight='n
         # medoid_c0 (trimmed)
         if not trim_frac:
             output.write(f"{calculate_medoid(c0, n_ary=n_ary, weight=weight)}, ")
-        if trim_frac:
-            trim_c0 = trim_outliers(c0, trim_frac=trim_frac, n_ary=n_ary, weight=weight)
+        elif trim_frac:
+            trim_c0 = trim_outliers(c0, trim_frac=trim_frac, n_ary=n_ary, weight=weight, removal='delete')
             index = calculate_medoid(trim_c0)
             search = trim_c0[index]
             new_index = np.where((c0 == search).all(axis=1))[0]
