@@ -1,4 +1,5 @@
 """This script normalizes the data using the min-max normalization method.
+
 Input:
 ----------------
 Break line (-b) - where the line breaks in the input CRD file.
