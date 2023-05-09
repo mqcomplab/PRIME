@@ -37,18 +37,18 @@ class Normalize:
         else:
             self.min = np.min(self.data)
             self.max = np.max(self.data)
-        self.normed_data = (self.data - self.min) / (self.max - self.min)
-        self.esim_norm = 1 - np.abs(self.normed_data - np.mean(self.normed_data, axis=0))
-        self.c_total = np.sum(1 - np.abs(self.normed_data - np.mean(self.normed_data, axis=0)), axis=0)
+        self.v3_norm = (self.data - self.min) / (self.max - self.min)
+        self.v2_norm = 1 - np.abs(self.v3_norm - np.mean(self.v3_norm, axis=0))
+        self.c_total = np.sum(1 - np.abs(self.v3_norm - np.mean(self.v3_norm, axis=0)), axis=0)
     
     def get_min_max(self):
         return self.min, self.max
-
-    def get_normed_data(self):
-        return self.normed_data
     
-    def get_esim_norm(self):
-        return self.esim_norm
+    def get_v2_norm(self):
+        return self.v2_norm
+    
+    def get_v3_norm(self):
+        return self.v3_norm
     
     def get_c_total(self):
         return self.c_total
