@@ -20,8 +20,9 @@ Example usage:
 >>> python normalize.py -b 65 -n v2
 >>> python normalize.py -b 65 -n v3
 """
+
 import sys
-sys.path.insert(0, '../')
+sys.path.insert(0, '../../')
 import modules as mod
 import numpy as np
 import argparse
@@ -40,4 +41,4 @@ elif args.norm_type == 'v3':
 min, max = norm.get_min_max()
 np.savetxt("normed_data.txt", normed_data)
 
-data = mod.read_cpptraj(args.break_line, min=min, max=max, normalize=True)
+data = mod.read_cpptraj(break_line=args.break_line, norm_type=args.norm_type, min=min, max=max, normalize=True)

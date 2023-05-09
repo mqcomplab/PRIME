@@ -53,7 +53,7 @@ class Normalize:
     def get_c_total(self):
         return self.c_total
 
-def read_cpptraj(break_line, min=None, max=None, normalize=False):
+def read_cpptraj(break_line=None, norm_type=None, min=None, max=None, normalize=False):
     """Read CPPTRAJ files to convert to numpy ndarray formatting and normalize the data.
     
     Args:
@@ -82,7 +82,10 @@ def read_cpptraj(break_line, min=None, max=None, normalize=False):
         frames = np.array([np.fromstring(frame, dtype='float32', sep=' ') for frame in str_frames])
         if normalize:
             norm = Normalize(data=frames, custom_min=min, custom_max=max)
-            normed_frame = norm.get_normed_data()
+            if norm_type == "v2":
+                normed_frame = norm.get_v2_norm()
+            elif norm_type == "v3":
+                normed_frame = norm.get_v3_norm()
             np.savetxt(f"normed_{file}", normed_frame)
         else:
             frames_list.append(frames)
