@@ -19,7 +19,7 @@ def calculate_max_key(dict):
     max_key = int(re.findall(r'\d+', max_key)[0])
     return max_key
 
-def gen_method_max(folder='nw', weighted_by_frames=True, trim_frac=0.1, n_ary='RR', weight='nw', output_name='rep'):
+def gen_method_max(sim_folder='nw', norm_folder='v3_norm', weighted_by_frames=True, trim_frac=0.1, n_ary='RR', weight='nw', output_name='rep'):
     """Generate the representative frame for each method.
 
     Args:
@@ -37,15 +37,15 @@ def gen_method_max(folder='nw', weighted_by_frames=True, trim_frac=0.1, n_ary='R
         t = f"_t{int(float(trim_frac) * 100)}"
     elif not trim_frac:
         t= ""
-    with open(f"{folder}/{w}{output_name}_{n_ary}{t}.txt","w") as output:
+    with open(f"{sim_folder}/{w}{output_name}_{n_ary}{t}.txt","w") as output:
         output.write("# Frame number with max values by method: medoid_all, medoid_c0, medoid_c0(trimmed), pairwise, union, medoid, outlier\n")
         
         # medoid_all
-        c_all = np.genfromtxt("new_clusters/normed_data.txt")
+        c_all = np.genfromtxt(f"{norm_folder}/normed_data.txt")
         output.write(f"{calculate_medoid(c_all, n_ary=n_ary, weight=weight)}, ")
         
         # medoid_c0 (untrimmed)
-        c0 = np.genfromtxt("new_clusters/normed_clusttraj.c0")
+        c0 = np.genfromtxt(f"{norm_folder}/normed_clusttraj.c0")
         output.write(f"{calculate_medoid(c0, n_ary=n_ary, weight=weight)}, ")
         
         # medoid_c0 (trimmed)
@@ -59,21 +59,21 @@ def gen_method_max(folder='nw', weighted_by_frames=True, trim_frac=0.1, n_ary='R
             output.write(f"{new_index[0]}, ")
         
         # pairwise
-        with open(f"{folder}/{w}pairwise_{n_ary}{t}.txt", "r") as file:
+        with open(f"{sim_folder}/{w}pairwise_{n_ary}{t}.txt", "r") as file:
             pairwise = json.load(file)
         output.write(f"{calculate_max_key(pairwise)}, ")
 
         # union
-        with open(f"{folder}/{w}union_{n_ary}{t}.txt", "r") as file:
+        with open(f"{sim_folder}/{w}union_{n_ary}{t}.txt", "r") as file:
             union = json.load(file)
         output.write(f"{calculate_max_key(union)}, ")
 
         # medoid
-        with open(f"{folder}/{w}medoid_{n_ary}{t}.txt", "r") as file:
+        with open(f"{sim_folder}/{w}medoid_{n_ary}{t}.txt", "r") as file:
             medoid = json.load(file)
         output.write(f"{calculate_max_key(medoid)}, ")
         
         # outlier
-        with open(f"{folder}/{w}outlier_{n_ary}{t}.txt", "r") as file:
+        with open(f"{sim_folder}/{w}outlier_{n_ary}{t}.txt", "r") as file:
             outlier = json.load(file)
         output.write(f"{calculate_max_key(outlier)}")
