@@ -25,7 +25,7 @@ class Normalize:
     min (float): The minimum value of the input data.
     max (float): The maximum value of the input data.
     """    
-    def __init__(self, file_path=None, data=None, custom_min=None, custom_max=None):
+    def __init__(self, file_path=None, data=None, custom_min=None, custom_max=None, custom_avg=None):
         if file_path:
             self.file_path = file_path
             self.data = np.genfromtxt(self.file_path)
@@ -37,12 +37,18 @@ class Normalize:
         else:
             self.min = np.min(self.data)
             self.max = np.max(self.data)
+
         self.v3_norm = (self.data - self.min) / (self.max - self.min)
-        self.v2_norm = 1 - np.abs(self.v3_norm - np.mean(self.v3_norm, axis=0))
+        if custom_avg is not None:
+            self.avg = custom_avg
+        else:
+            self.avg = np.mean(self.v3_norm, axis=0)
+        self.v2_norm = 1 - np.abs(self.v3_norm - self.avg)
+        #self.v2_norm = 1 - np.abs(self.v3_norm - np.mean(self.v3_norm, axis=0))
         self.c_total = np.sum(1 - np.abs(self.v3_norm - np.mean(self.v3_norm, axis=0)), axis=0)
     
     def get_min_max(self):
-        return self.min, self.max
+        return self.min, self.max, self.avg
     
     def get_v2_norm(self):
         return self.v2_norm
@@ -53,7 +59,7 @@ class Normalize:
     def get_c_total(self):
         return self.c_total
 
-def read_cpptraj(break_line=None, norm_type=None, min=None, max=None, normalize=False):
+def read_cpptraj(break_line=None, norm_type=None, min=None, max=None, avg=None, normalize=False):
     """Read CPPTRAJ files to convert to numpy ndarray formatting and normalize the data.
     
     Args:
@@ -81,7 +87,7 @@ def read_cpptraj(break_line=None, norm_type=None, min=None, max=None, normalize=
         str_frames = [' '.join(frame) for frame in str_frames]
         frames = np.array([np.fromstring(frame, dtype='float32', sep=' ') for frame in str_frames])
         if normalize:
-            norm = Normalize(data=frames, custom_min=min, custom_max=max)
+            norm = Normalize(data=frames, custom_min=min, custom_max=max, custom_avg=avg)
             if norm_type == "v2":
                 normed_frame = norm.get_v2_norm()
             elif norm_type == "v3":

@@ -38,7 +38,7 @@ if args.norm_type == 'v2':
     normed_data = norm.get_v2_norm()
 elif args.norm_type == 'v3':
     normed_data = norm.get_v3_norm()
-min, max = norm.get_min_max()
+min, max, avg = norm.get_min_max()
 np.savetxt("normed_data.txt", normed_data)
 
-data = mod.read_cpptraj(break_line=args.break_line, norm_type=args.norm_type, min=min, max=max, normalize=True)
+data = mod.read_cpptraj(break_line=args.break_line, norm_type=args.norm_type, min=min, max=max, avg=avg, normalize=True)
