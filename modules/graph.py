@@ -10,7 +10,10 @@ def graph_rep_frames(folder_pattern="[Nn]*", sim_folder=None, weighted=True,
                      n_ary="RR", trim_frac=0.1, return_dict=None):
     if not os.path.exists("graphs"):
         os.makedirs("graphs")
-    input_folders = sorted(glob.glob(folder_pattern), key=lambda x: int(re.findall("\d+", x)[0]))
+    if type(folder_pattern) is str:
+        input_folders = sorted(glob.glob(folder_pattern), key=lambda x: int(re.findall("\d+", x)[0]))
+    elif type(folder_pattern) is list:
+        input_folders = folder_pattern
     if weighted:
         w = "w_"
     elif not weighted:
@@ -25,8 +28,8 @@ def graph_rep_frames(folder_pattern="[Nn]*", sim_folder=None, weighted=True,
                  "pairwise": [], "union": [], "medoid": [], "outlier": []}
     for folder in input_folders:
         data = np.loadtxt(f"{folder}/rmsd.dat", usecols=1, skiprows=1)
-        list = np.genfromtxt(f"{folder}/{sim_folder}/{w}rep_{n_ary}{t}.txt", delimiter=",")
-        selected_lines = list.astype(int).tolist()
+        lines = np.genfromtxt(f"{folder}/{sim_folder}/{w}rep_{n_ary}{t}.txt", delimiter=",")
+        selected_lines = lines.astype(int).tolines()
         for i, key in enumerate(data_dict.keys()):
             data_dict[key].append(data[selected_lines[i]])
     
@@ -80,8 +83,8 @@ def graph_rep_frames_fracs(folder_pattern="[Nn]*", sim_folder=None, weighted=Tru
                  "pairwise": [], "union": [], "medoid": [], "outlier": []}
     for folder in input_folders:
         data = np.loadtxt(f"{folder}/rmsd.dat", usecols=1, skiprows=1)
-        list = np.genfromtxt(f"{folder}/{sim_folder}/{w}rep_{n_ary}{t}.txt", delimiter=",")
-        selected_lines = list.astype(int).tolist()
+        lines = np.genfromtxt(f"{folder}/{sim_folder}/{w}rep_{n_ary}{t}.txt", delimiter=",")
+        selected_lines = lines.astype(int).tolines()
         for i, key in enumerate(data_dict.keys()):
             data_dict[key].append(data[selected_lines[i]])
     
