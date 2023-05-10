@@ -6,7 +6,7 @@ import matplotlib
 matplotlib.use('Agg')
 import os
 
-def graph_rep_frames(folder_pattern="[Nn]*",weighted=True, n_ary="RR", trim_frac=0.1, return_dict=None):
+def graph_rep_frames(folder_pattern="[Nn]*", sim_folder=None, weighted=True, n_ary="RR", trim_frac=0.1, return_dict=None):
     if not os.path.exists("graphs"):
         os.makedirs("graphs")
     input_folders = sorted(glob.glob(folder_pattern), key=lambda x: int(re.findall("\d+", x)[0]))
@@ -23,7 +23,7 @@ def graph_rep_frames(folder_pattern="[Nn]*",weighted=True, n_ary="RR", trim_frac
     data_dict = {"medoid_all": [], "medoid_c0": [], "medoid_c0_trimmed": [], "pairwise": [], "union": [], "medoid": [], "outlier": []}
     for folder in input_folders:
         data = np.loadtxt(f"{folder}/rmsd.dat", usecols=1, skiprows=1)
-        list = np.genfromtxt(f"{folder}/w/{w}rep_{n_ary}{t}.txt", delimiter=",")
+        list = np.genfromtxt(f"{folder}/{sim_folder}/{w}rep_{n_ary}{t}.txt", delimiter=",")
         selected_lines = list.astype(int).tolist()
         for i, key in enumerate(data_dict.keys()):
             data_dict[key].append(data[selected_lines[i]])
