@@ -126,7 +126,7 @@ def graph_rep_frames_fracs(folder_pattern="[Nn]*", sim_folder=None, weighted=Tru
     # Plot bar graph of fraction of point crossed 0
     ax2 = ax1.twinx()
     ax2.set_ylabel("Fraction below zero")
-    ax2.bar(x_values, fracs, width=0.4, color="#0047ab")
+    ax2.bar(x_values, fracs, width=0.2, color="#0047ab")
     # Next two lines is the option to format axis in fractions. Uncomment to use.
     #ax2.yaxis.set_major_locator(ticker.MultipleLocator(1 / len(n_dict["medoid"])))
     #ax2.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, pos: str(Fraction(y).limit_denominator())))
