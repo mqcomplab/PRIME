@@ -11,13 +11,13 @@ def graph_rep_frames(folder_pattern="[Nn]*", sim_folder=None, weighted=True,
     if not os.path.exists("graphs"):
         os.makedirs("graphs")
     input_folders = sorted(glob.glob(folder_pattern), key=lambda x: int(re.findall("\d+", x)[0]))
-    if weighted is True:
+    if weighted:
         w = "w_"
-    elif weighted is False:
+    elif not weighted:
         w = ""
-    if trim_frac is not None:
+    if trim_frac:
         t = f"_t{int(float(trim_frac) * 100)}"
-    elif trim_frac is None:
+    elif not trim_frac:
         t = ""
     
     # Dictionary for all RMSD results for each method.
@@ -51,14 +51,14 @@ def graph_rep_frames(folder_pattern="[Nn]*", sim_folder=None, weighted=True,
             c = '#00b5c5' if yi < 0 else '#c57300'
             plt.scatter(x, yi, c=c)
     plt.scatter(x_values, d_means, marker="o", color="#0047AB", label="average", s=70)
-    plt.axhline(y = 0, linestyle="--", color="black", zorder=0)
+    plt.axhline(y=0, linestyle="--", color="black", zorder=0)
     plt.ylim(-5, 15)
     plt.legend()
     plt.savefig(f"graphs/{w}protein_{n_ary}{t}.png", bbox_inches="tight", dpi=300, transparent=True)
     plt.close()
     
     # Returning data dictionary if requested.
-    if return_dict is not None:
+    if return_dict:
         return n_dict
 
 def graph_rep_frames_fracs(folder_pattern="[Nn]*", sim_folder=None, weighted=True, 
@@ -66,13 +66,13 @@ def graph_rep_frames_fracs(folder_pattern="[Nn]*", sim_folder=None, weighted=Tru
     if not os.path.exists("graphs"):
         os.makedirs("graphs")
     input_folders = sorted(glob.glob(folder_pattern), key=lambda x: int(re.findall("\d+", x)[0]))
-    if weighted is True:
+    if weighted:
         w = "w_"
-    elif weighted is False:
+    elif not weighted:
         w = ""
-    if trim_frac is not None:
+    if trim_frac:
         t = f"_t{int(float(trim_frac) * 100)}"
-    elif trim_frac is None:
+    elif not trim_frac:
         t = ""
     
     # Dictionary for all RMSD results for each method.
@@ -136,5 +136,5 @@ def graph_rep_frames_fracs(folder_pattern="[Nn]*", sim_folder=None, weighted=Tru
     fig1.savefig(f"graphs/{w}frac_{n_ary}{t}.png", bbox_inches="tight", dpi=300, transparent=True)
 
     # Returning data dictionary if requested.
-    if return_dict is not None:
+    if return_dict:
         return n_dict
