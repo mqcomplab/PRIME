@@ -112,6 +112,7 @@ def graph_rep_frames_fracs(folder_pattern="[Nn]*", sim_folder=None, weighted=Tru
     x_values = [r"$med_{c_{all}}$", r"$med_{c_{0}~trimmed}$", r"$\langle sim(F_{c0}, F_k)\rangle$", 
                 r"$esim({F_{c0}}\cup C_k)$", r"$sim(F_{C_0}, med_{C_k})$", r"$sim(F_{C_0}, out_{C_k})$"]
     fig1, ax1 = plt.subplots()
+    fig1.set_size_inches(8, 6)
     ax1.set_ylabel(r"$\mathrm{\Delta \langle RMSD\rangle~(Å)}$")
     new_ys = [n_dict["medoid_all"], n_dict["medoid_c0_trimmed"], n_dict["pairwise"], 
               n_dict["union"], n_dict["medoid"], n_dict["outlier"]]
@@ -128,11 +129,11 @@ def graph_rep_frames_fracs(folder_pattern="[Nn]*", sim_folder=None, weighted=Tru
                         label=label)[0] for color, label in labels.items()]
     ax1.legend(handles=handles, numpoints=1, loc='upper right', 
                bbox_to_anchor=(1.0, 1.0), borderaxespad=0.1)
-
+    
     # Plot bar graph of fraction of point crossed 0
     ax2 = ax1.twinx()
     ax2.set_ylabel("Fraction below zero")
-    ax2.bar(x_values, fracs, width=0.2, color="#0047ab")
+    ax2.bar(x_values, fracs, width=0.4, color="#0047ab")
     # Next two lines is the option to format axis in fractions. Uncomment to use.
     #ax2.yaxis.set_major_locator(ticker.MultipleLocator(1 / len(n_dict["medoid"])))
     #ax2.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, pos: str(Fraction(y).limit_denominator())))
