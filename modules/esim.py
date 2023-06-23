@@ -168,7 +168,8 @@ class SimilarityIndex:
          'w': {'AC': self.ac_w, 'BUB': self.bub_w, 'CT1': self.ct1_w, 'CT2': self.ct2_w, 'CT3': self.ct3_w,
             'CT4': self.ct4_w, 'Fai': self.fai_w, 'Gle': self.gle_w, 'Ja': self.ja_w,
             'Ja0': self.ja0_w, 'JT': self.jt_w, 'RT': self.rt_w, 'RR': self.rr_w,
-            'SM': self.sm_w, 'SS1': self.ss1_w, 'SS2': self.ss2_w}}
+            'SM': self.sm_w, 'SS1': self.ss1_w, 'SS2': self.ss2_w},
+         'nw_nw': {'RR': self.rr_nw_nw, 'SM': self.sm_nw_nw}}
    
     def __call__(self):
         """The default method to be called when the class is instantiated.
@@ -356,6 +357,17 @@ class SimilarityIndex:
         ss2_nw = (2 * self.counters['total_w_sim'])/\
                 (self.counters['p'] + self.counters['total_sim'])
         return ss2_nw
+    
+    # Non-Weighted Indices for Denominator and Numerator
+    def rr_nw_nw(self):
+        rr_nw_nw = (self.counters['a'])/\
+                (self.counters['p'])
+        return rr_nw_nw
+    
+    def sm_nw_nw(self):
+        sm_nw_nw = (self.counters['total_sim'])/\
+                (self.counters['p'])
+        return sm_nw_nw
 
 def calculate_medoid(data, n_ary = 'RR', w_factor = 'fraction', weight = 'nw', c_total = None):
     """Calculate the medoid of a set
