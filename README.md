@@ -1,7 +1,9 @@
-<img src="img/3.png" width="800" height=auto align="center"></a>
+<img src="img/logo.png" width="800" height=auto align="center"></a>
 <br>
 
-<h3 align="center">
+# Protein Retrieval via Integrative Molecular Ensembles (PRIME)
+
+<h3 align="center"> 
     <p><b>🪄 Mastering the art of protein refinement, one conformation at a time 🪄</b></p>
     </h3>
 
