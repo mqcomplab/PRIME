@@ -18,11 +18,11 @@ import modules as mod
 parser = argparse.ArgumentParser(description='Generate method max with optional trim and n_ary')
 parser.add_argument('-m', '--method', type=str, help='method to use')
 parser.add_argument('-s', '--sim_folder', type=str, help='folder to access')
-parser.add_argument('-n', '--norm_folder', type=str, help='norm_folder to access')
 parser.add_argument('-t', '--trim_frac', type=float, default=None,
                     help='Trim parameter for gen_method_max method')
 parser.add_argument('-i', '--index', type=str, default='RR',
                     help='n_ary parameter for gen_method_max method')
+parser.add_argument('-d', '--norm_folder', type=str, help='norm_folder to access')
 
 args = parser.parse_args()
 if args.method:
