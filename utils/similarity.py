@@ -2,9 +2,8 @@
 Example usage:
 >>> python similarity.py -m medoid -n 11 -i RR
 """
-
 import sys
-sys.path.insert(0, '../')
+sys.path.insert(0, '../../')
 import argparse
 import modules as mod
 import json
@@ -43,7 +42,7 @@ if args.weighted_by_frames:
 else:
     w = "nw"
 
-dir_name = 'prime'
+dir_name = 'outputs'
 if not os.path.exists(dir_name):
     os.makedirs(dir_name)
 
