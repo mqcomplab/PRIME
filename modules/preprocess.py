@@ -99,23 +99,3 @@ def read_cpptraj(break_line=None, norm_type=None, min=None, max=None, avg=None, 
     if not normalize:
         data = np.concatenate(frames_list, axis=0)
         return data
-
-def normalize_file(file, output, break_line=None, norm_type=None, min=None, max=None, avg=None): 
-    break_line = break_line
-    with open(file, 'r') as infile:
-        lines = [line.rstrip() for line in infile][1:]
-    sep_lines = [[line[i:i+8] for i in range(0, len(line), 8)] for line in lines]
-    chunks = [sep_lines[i:i+break_line] for i in range(0, len(sep_lines), break_line)]
-    str_frames = [list(chain.from_iterable(chunk)) for chunk in chunks]
-    str_frames = [' '.join(frame) for frame in str_frames]
-    frames = np.array([np.fromstring(frame, dtype='float32', sep=' ') for frame in str_frames])
-    if norm_type == "v2":
-        norm = Normalize(data=frames)
-        normed_frame = norm.get_v2_norm()
-    elif norm_type == "v3":
-        norm = Normalize(data=frames)
-        normed_frame = norm.get_v3_norm()
-    min, max, avg = norm.get_min_max()
-    np.savetxt(output, normed_frame)
-    return min, max, avg
-
