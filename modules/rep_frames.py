@@ -41,11 +41,11 @@ def gen_all_methods_max(sim_folder='nw', norm_folder='v3_norm', weighted_by_fram
         output.write("# Frame number with max values by method: medoid_all, medoid_c0, medoid_c0(trimmed), pairwise, union, medoid, outlier\n")
         
         # medoid_all
-        c_all = np.genfromtxt(f"{norm_folder}/normed_data.txt")
+        c_all = np.load(f"{norm_folder}/normed_data.npy")
         output.write(f"{calculate_medoid(c_all, n_ary=n_ary, weight=weight)}, ")
         
         # medoid_c0 (untrimmed)
-        c0 = np.genfromtxt(f"{norm_folder}/normed_clusttraj.c0")
+        c0 = np.load(f"{norm_folder}/normed_clusttraj.c0.npy")
         output.write(f"{calculate_medoid(c0, n_ary=n_ary, weight=weight)}, ")
         
         # medoid_c0 (trimmed)
@@ -107,7 +107,7 @@ def gen_one_method_max(method, sim_folder='nw', norm_folder='v3_norm', weighted_
             output.write(f"{calculate_medoid(c_all, n_ary=n_ary, weight=weight)}")
         
         elif method == 'medoid_c0':
-            c0 = np.genfromtxt(f"{norm_folder}/normed_clusttraj.c0")
+            c0 = np.load(f"{norm_folder}/normed_clusttraj.c0")
             output.write(f"{calculate_medoid(c0, n_ary=n_ary, weight=weight)}")
         
         elif method == 'medoid_c0(trimmed)':
