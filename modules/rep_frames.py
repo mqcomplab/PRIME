@@ -103,7 +103,7 @@ def gen_one_method_max(method, sim_folder='nw', norm_folder='v3_norm', weighted_
         output.write(f"# Frame number with max values by method: {method}\n")
         
         if method == 'medoid_all':
-            c_all = np.genfromtxt(f"{norm_folder}/normed_data.txt")
+            c_all = np.load(f"{norm_folder}/normed_data.npy")
             output.write(f"{calculate_medoid(c_all, n_ary=n_ary, weight=weight)}")
         
         elif method == 'medoid_c0':

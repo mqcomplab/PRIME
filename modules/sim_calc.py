@@ -46,7 +46,7 @@ class FrameSimilarity:
         Notes:
             Options for `n_ary` and `weight` under `esim.py`.
         """
-        self.c0 = np.genfromtxt(f"{cluster_folder}/normed_clusttraj.c0")
+        self.c0 = np.load(f"{cluster_folder}/normed_clusttraj.c0.npy")
         if trim_frac:
             self.c0 = trim_outliers(self.c0, trim_frac=trim_frac, n_ary=n_ary, weight=weight)
         self.input_files = sorted(glob.glob(f"{cluster_folder}/normed_clusttraj.c*"), key=lambda x: int(re.findall("\d+", x)[0]))[1:]
@@ -74,7 +74,7 @@ class FrameSimilarity:
                 w_dict (dict): calls `weight_dict` function to weight similarity values.
         """
         for each, file in enumerate(self.input_files):
-            ck = np.genfromtxt(file)
+            ck = np.load(file)
             self.sims[each] = {}
             for i, x in enumerate(self.c0):
                 total = 0
@@ -110,7 +110,7 @@ class FrameSimilarity:
                 w_dict (dict): calls `weight_dict` function to weight similarity values.
         """
         for each, file in enumerate(self.input_files):
-            ck = np.genfromtxt(file)
+            ck = np.load(file)
             self.sims[each] = {}
             for i, x in enumerate(self.c0):
                 c_total = np.sum(ck, axis=0) + x
@@ -137,7 +137,7 @@ class FrameSimilarity:
             dict: A dictionary containing the average similarity between each pair of clusters.
         """
         for each, file in enumerate(self.input_files):
-            ck = np.genfromtxt(file)
+            ck = np.load(file)
             index = index_func(ck, n_ary=self.n_ary, weight=self.weight)
             medoid = ck[index]
             self.sims[each] = {}
