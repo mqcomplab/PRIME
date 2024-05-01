@@ -24,7 +24,8 @@ class FrameSimilarity:
         calculate_outliers: Calculates the similarity between the dominant cluster and the cluster with the highest average distance to the dominant cluster.
     """
     
-    def __init__(self, cluster_folder=None, summary_file=None, trim_frac=None, n_clusters=None, weighted_by_frames=True, n_ary='RR', weight='nw_nw'):
+    def __init__(self, cluster_folder=None, summary_file=None, trim_frac=None, n_clusters=None, 
+                 weighted_by_frames=True, n_ary='RR', weight='nw'):
         """Initializes instances for the FrameSimilarity class.
         
         Args:
