@@ -1,3 +1,9 @@
+"""
+Potential Error:
+File "<__array_function__ internals>", line 180, in concatenate
+ValueError: need at least one array to concatenate
+Path Incorrect"""
+
 import numpy as np
 import sys
 sys.path.insert(0, '../../')
@@ -7,12 +13,13 @@ import glob
 
 # System info - EDIT THESE
 input_top = '../../example/aligned_tau.pdb'
+unnormed_cluster_dir = '../clusters/outputs/clusttraj_*'
 output_base_name = 'normed_clusttraj'
 atomSelection = 'resid 3 to 12 and name N CA C O H'
 n_clusters = 10
 
 if __name__ == '__main__':
-    list_clusttraj = sorted(glob.glob("../clusters/outputs/clusttraj_*"), 
+    list_clusttraj = sorted(glob.glob(unnormed_cluster_dir), 
                             key=lambda x: int(re.findall("\d+", x)[0]))
     list_clusttraj = list_clusttraj[:n_clusters]
     all_clusttraj = []
