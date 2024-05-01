@@ -1,14 +1,15 @@
+"""A script to calculate the similarity between clusters using different methods.
+Example usage:
+>>> python similarity.py -m medoid -n 11 -i RR
+"""
+
 import sys
 sys.path.insert(0, '../')
 import argparse
 import modules as mod
 import json
 import time
-
-"""A script to calculate the similarity between clusters using different methods.
-Example usage:
->>> python similarity.py -m medoid -n 11 -i RR
-"""
+import os
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser()
@@ -35,20 +36,27 @@ lib = mod.FrameSimilarity(cluster_folder=args.cluster_folder, summary_file=args.
                                n_ary=args.index, weighted_by_frames=args.weighted_by_frames)
 method_func = getattr(lib, f'calculate_{args.method}')
 new_sims = method_func()
+
 if args.weighted_by_frames:
     w = "w"
+
 else:
     w = "nw"
+
+dir_name = 'prime'
+if not os.path.exists(dir_name):
+    os.makedirs(dir_name)
+
 if args.trim_frac:
-    with open(f'w/{w}_{args.method}_{args.index}_t{int(float(args.trim_frac) * 100)}.txt', 
+    with open(f'{dir_name}/{w}_{args.method}_{args.index}_t{int(float(args.trim_frac) * 100)}.txt', 
               'w') as file:
         file.write(json.dumps(new_sims, indent=4))
     end = time.perf_counter()
     print(f"{w}_{args.method}_{args.index}_t{int(float(args.trim_frac) * 100)}: \
           Finished in {round(end-start,2)} second")
+
 else:
-    with open(f'w/{w}_{args.method}_{args.index}.txt', 'w') as file:
+    with open(f'{dir_name}/{w}_{args.method}_{args.index}.txt', 'w') as file:
         file.write(json.dumps(new_sims, indent=4))
     end = time.perf_counter()
     print(f"{w}_{args.method}_{args.index}: Finished in {round(end-start,2)} second")
-
