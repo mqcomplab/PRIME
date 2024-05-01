@@ -10,9 +10,8 @@ No trim, RR index
 20% trim, SM index
 >>> python scripts/rep_frames.py -t 0.2 -i SM
 """
-
 import sys
-sys.path.insert(0, '../')
+sys.path.insert(0, '../../')
 import argparse
 import modules as mod
 

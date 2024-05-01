@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, '../')
+sys.path.insert(0, '../../')
 import modules as mod
 
 cluster_folder = "Cpptraj_linkage_sieve_eps_all_ss_1"

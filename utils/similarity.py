@@ -2,9 +2,8 @@
 Example usage:
 >>> python similarity.py -m medoid -n 11 -i RR
 """
-
 import sys
-sys.path.insert(0, '../')
+sys.path.insert(0, '../../')
 import argparse
 import modules as mod
 import json
