@@ -48,7 +48,7 @@ Preparation for Molecular Dynamics Trajectory
 
 Prepare a valid topology file (e.g. `.pdb`, `.prmtop`), trajectory file (e.g. `.dcd`, `.nc`), and the atom selection. This step will convert a Molecular Dynamics trajectory to a numpy ndarray. **Make sure the trajectory is already aligned and/or centered if needed!**
 
-**Step-by-step tutorial can be found in the [scripts/inputs/preprocessing.ipynb](../scripts/inputs/preprocessing.ipynb).**
+**Step-by-step tutorial can be found in the [scripts/inputs/preprocessing.ipynb](scripts/inputs/preprocessing.ipynb).**
 
 ### 2. Cluster Assignment
 In this example, we will use *k*-means clustering to assign labels to the clusters and the number of clusters will be 20. Any clustering method can be used as long as the data is clustered (e.g. DBSCAN, Hierarchical Clustering). **Please check out [MDANCE](https://github.com/mqcomplab/MDANCE) for more clustering methods!**
@@ -83,7 +83,7 @@ python assign_labels.py
 2. csv file containing the population of each cluster.
 
 ### 3. Cluster Trajectories
-[scripts/outputs/postprocessing.ipynb](../scripts/outputs/postprocessing.ipynb) will use the indices from last step to extract the designated frames from the original trajectory for each cluster.
+[scripts/outputs/postprocessing.ipynb](scripts/outputs/postprocessing.ipynb) will use the indices from last step to extract the designated frames from the original trajectory for each cluster.
 
 ### 4. Cluster Normalization
 With already clustered data, [scripts/normalization/normalize.py](scripts/normalization/normalize.py) Normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
@@ -154,6 +154,7 @@ python ../../utils/rep_frames.py -m union -s outputs -d ../normalization -t 0.1 
 
 ## Further Reading
 For more information on the PRIME algorithm, please refer to the [PRIME paper](https://www.biorxiv.org/content/10.1101/2024.03.19.585783v1). Please cite using [CITATION.bib](CITATION.bib).
+
 <img src="img/methods.jpg" alt="methods" width="500" height=auto align="center"></a>
 
  *Fig 2. Six techniques of protein refinement. Blue is top cluster.* 
