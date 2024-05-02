@@ -21,7 +21,8 @@
 <img src="img/2k2e.png" alt="2k2e" width="300" height=auto align="right"></a>
     <figcaption><i>Fig 1. Superposition of the most representative structures found with extended indices (yellow) and experimental native structures (blue) of 2k2e.</i></figcaption>
 </figure>
-
+&nbsp
+&nbsp
 
 ## Installation
 ``` 
