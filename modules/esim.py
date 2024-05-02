@@ -12,12 +12,7 @@
 """
 
 import numpy as np
-import random
-import glob
-import pickle
 from math import log, ceil
-from scipy.stats import rankdata
-import time
 
 def calculate_counters(data, n_objects = None, c_threshold = None, w_factor = "fraction"):
     """Calculate 1-similarity, 0-similarity, and dissimilarity counters
