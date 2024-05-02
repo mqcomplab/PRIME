@@ -68,17 +68,38 @@ In this example, we will use *k*-means clustering to assign labels to the cluste
 ```bash
 python assign_labels.py
 ```
+#### Outputs
+1. csv file containing the cluster labels for each frame.
+2. csv file containing the population of each cluster.
 
 ### 3. Cluster Normalization
 With already clustered data, [scripts/normalization/normalize.py](scripts/normalization/normalize.py) Normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
-```
-cd sample_clusters
-python normalize.py -b 950
-```
-Output will have `normed_clusttraj.c*` files and `normed_data.txt`, appended all normed files together.
 
-### Step 3. Similarity Calculations
-Back at root directory, `similarity.py` generates a similarity dictionary from running the protein refinement method. 
+    # System info - EDIT THESE
+    input_top = '../../example/aligned_tau.pdb'
+    unnormed_cluster_dir = '../clusters/outputs/clusttraj_*'
+    output_base_name = 'normed_clusttraj'
+    atomSelection = 'resid 3 to 12 and name N CA C O H'
+    n_clusters = 10
+
+#### Inputs
+##### System info
+`input_top` is the topology file used in the clustering. <br>
+`unnormed_cluster_dir` is the directory where the clustering files are located from step 2. <br>
+`output_base_name` is the base name for the output files. <br>
+`atomSelection` is the atom selection used in the clustering. <br>
+`n_clusters` is the number of clusters used in the PRIME. If number less than total number of cluster, it will take top *n* number of clusters. <br>
+
+```bash
+python normalize.py
+```
+
+#### Outputs
+1. `normed_clusttraj.c*.npy` files, normalized clustering files.
+2. `normed_data.npy`, appended all normed files together.
+
+### 4. Similarity Calculations
+[scripts/prime/exec_similarity.py](scripts/prime/exec_similarity.py) generates a similarity dictionary from running PRIME. 
 - `-h` - for help with the argument options.
 - `-m` - methods (*required*)
 - `-n` - number of clusters (*required*)
@@ -88,8 +109,9 @@ Back at root directory, `similarity.py` generates a similarity dictionary from r
 - `-d` - directory where the `normed_clusttraj.c*` files are located.
 - `-s` - location where `summary` file is located
 
-```
-python similarity.py -m medoid -n 11 -i RR -t 0.1
+#### Example
+```bash
+python ../../utils/rep_frames.py -m union -s outputs -d ../normalization -t 0.1 -i SM
 ```
 To generate a similarity dictionary using data in `sample_clusters/normed_clusttraj.c*` using the medoid method (3.1 in *Fig 1*) and Russell Rao index. In addition, 10% of the outliers were trimmed. 
 
