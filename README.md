@@ -137,12 +137,12 @@ Keys are frame #. Values are [cluster 1 similarity, cluster #2 similarity, ..., 
 ### 6. Representative Frames
 [scripts/prime/exec_rep_frames.py](scripts/prime/exec_rep_frames.py) will determine the native structure of the protein using the similarity dictionary generated in step 5.
 
--`h` - for help with the argument options.
--`m` - methods (for one method, None for all methods)
--`s` - folder to access for `w_union_SM_t10.txt` file
--`i` - similarity index (*required*)
--`t` - Fraction of outliers to trim in decimals (default is None).
--`d` - directory where the `normed_clusttraj.c*` files are located (required if method is None)
+- `h` - for help with the argument options.
+- `m` - methods (for one method, None for all methods)
+- `s` - folder to access for `w_union_SM_t10.txt` file
+- `i` - similarity index (*required*)
+- `t` - Fraction of outliers to trim in decimals (default is None).
+- `d` - directory where the `normed_clusttraj.c*` files are located (required if method is None)
 
 #### Example 
 ```bash
