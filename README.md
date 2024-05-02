@@ -19,24 +19,22 @@
 
 <p>Protein structures prediction is important because the accuracy of protein structures influence how our understanding of its function and its interactions with other molecules, which can help to design new drugs to target specific molecular interactions. 
 
+<b>Protein Retrieval via Integrative Molecular Ensembles (PRIME)</b> is a novel algorithm that predicts the native structure of a protein from simulation or clustering data. This repo contains six different ways of determining the native structure of biomolecules from simulation or clustering data. These methods perfectly mapped all the structural motifs in the studied systems and required unprecedented linear scaling.</p>
+
 <figure>
     <img src="img/2k2e.png" alt="2k2e" width="300" height=auto align="right"></a>
     <figcaption><i>Fig 1. Superposition of the most representative structures found with extended indices (yellow) and experimental native structures (blue) of 2k2e.</i></figcaption>
 </figure>
 
-<b>Protein Retrieval via Integrative Molecular Ensembles (PRIME)</b> is a novel algorithm that predicts the native structure of a protein from simulation or clustering data. This repo contains six different ways of determining the native structure of biomolecules from simulation or clustering data. These methods perfectly mapped all the structural motifs in the studied systems and required unprecedented linear scaling.</p>
-
 &nbsp
 &nbsp
 
 ## Installation
+PRIME requires Python 3.6+ and the following packages: MDAnalysis, numpy, and matplotlib. 
 ``` 
 git clone https://github.com/lexin-chen/PRIME.git
 cd PRIME
 ```
-requires Python 3.6+ and the following packages: MDAnalysis, numpy, and matplotlib. 
-
-`modules` contains the functions required to run the algorithm. `sample_clusters/clusttraj.c*` contains sample clustering files prepared through CPPTRAJ Hierarchical clustering. `new_clusters/normalize.py` normalizes clustering files through min-max normalization. `similarity.py` generates a similarity dictionary from running the protein refinement method.
 
 ## Tutorial
 The following tutorial will guide you through the process of determining the native structure of a biomolecule using the PRIME algorithm. If you already have clustered data, you can skip to Step 3.
