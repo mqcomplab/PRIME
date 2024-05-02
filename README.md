@@ -1,12 +1,21 @@
 <img src="img/logo.png" width="800" height=auto align="center"></a>
 <br>
-
-# Protein Retrieval via Integrative Molecular Ensembles (PRIME)
+## Protein Retrieval via Integrative Molecular Ensembles (PRIME)
 
 <h3 align="center"> 
     <p><b>🪄 Predict Protein Structure with Precision 🪄</b></p>
     </h3>
+Table of Contents
+=================
+- [Overview](#overview)
+- [Tutorial](#tutorial)
+    - [1. Input Preparations](#1-input-preparations)
+    - [2. NANI Screening](#2-nani-screening)
+    - [3. Analysis of NANI Screening Results](#3-analysis-of-nani-screening-results)
+    - [4. Cluster Assignment](#4-cluster-assignment)
+    - [5. Extract frames for each cluster (Optional)](#5-extract-frames-for-each-cluster-optional)
 
+## Overview
 <p>Protein structures prediction is important because the accuracy of protein structures influence how our understanding of its function and its interactions with other molecules, which can help to design new drugs to target specific molecular interactions. This repo contains six different ways of determining the native structure of biomolecules from simulation or clustering data. <b>These methods perfectly mapped all the structural motifs in the studied systems and required unprecedented linear scaling.</b></p>
 &nbsp
 <figure>
@@ -14,8 +23,13 @@
     <figcaption><i>Fig 1. Superposition of the most representative structures found with extended indices (yellow) and experimental native structures (blue) of 2k2e.</i></figcaption>
 </figure>
 
-
-## Usage
+## Installation
+``` 
+git clone https://github.com/lexin-chen/PRIME.git
+cd PRIME
+```
+requires Python 3.6+ and the following packages: MDAnalysis, numpy, and matplotlib. 
+```
 `modules` contains the functions required to run the algorithm. `sample_clusters/clusttraj.c*` contains sample clustering files prepared through CPPTRAJ Hierarchical clustering. `new_clusters/normalize.py` normalizes clustering files through min-max normalization. `similarity.py` generates a similarity dictionary from running the protein refinement method.
 
 ## Tutorial

@@ -12,12 +12,7 @@
 """
 
 import numpy as np
-import random
-import glob
-import pickle
 from math import log, ceil
-from scipy.stats import rankdata
-import time
 
 def calculate_counters(data, n_objects = None, c_threshold = None, w_factor = "fraction"):
     """Calculate 1-similarity, 0-similarity, and dissimilarity counters
@@ -458,48 +453,3 @@ def calculate_comp_sim(data, c_threshold = None, n_ary = 'RR', w_factor = 'fract
         sim_index = SI()
         total.append((i, sim_index))
     return total
-
-def real_var2_pre(data):
-    """Pre-processing of normalized continuous data"""
-    c_total = np.sum(1 - np.abs(data - np.mean(data, axis=0)),axis=0)
-    return c_total
-
-def sorted_comp_sim(data, c_threshold = None, n_ary = 'RR', w_factor = 'fraction', weight = 'nw', c_total = None):
-    total = calculate_comp_sim(data, c_threshold = c_threshold, n_ary = n_ary, w_factor = w_factor, weight = weight, c_total = c_total)
-    sort = sorted(total, key = lambda x: x[1])
-    return sort
-
-#for m in [100000, 1000000, 10000000]:
-#    c_total = np.array(list(range(m)), dtype='float32')
-#    start = time.time()
-#    counters = calculate_counters(c_total, n_objects=2)
-#    t = time.time() - start
-#    print(t)
-
-#data = np.array([[0,1,0,0,1,0],[1,0,1,1,0,1],[1,0,0,0,1,1],[1,1,0,1,1,1],[0,1,1,0,1,1]])
-
-#fp_total = 10000
-#fp_size = 100000
-#data = np.random.randint(2, size=(fp_total, fp_size), dtype='int8')
-#total_sum = np.sum(data, axis=0)
-#
-#old = 0
-#
-#if old:
-#    start = time.time()
-#    total = calculate_comp_sim(data, total_sum, c_threshold=None, n_ary = 'RR', weight = 'nw')
-#    t = time.time() - start
-#    print(t)
-#else:
-#    start = time.time()
-#    total = calculate_comp_sim_rr(data, total_sum)
-#    t = time.time() - start
-#    print(t)
-#    print(total)
-
-#dim = 100
-#data = np.random.random((dim, dim))
-#c_total = real_var2_pre(data)
-#c_threshold = 0.56
-#d = gen_sim_dict(c_total, dim, c_threshold=c_threshold)
-#print(d['nw']['RR'])
