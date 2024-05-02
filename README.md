@@ -1,6 +1,4 @@
 <img src="img/logo.png" width="800" height=auto align="center"></a>
-<br>
-## Protein Retrieval via Integrative Molecular Ensembles (PRIME)
 
 <h3 align="center"> 
     <p><b>🪄 Predict Protein Structure with Precision 🪄</b></p>
@@ -18,7 +16,7 @@
 - [Further Reading](#further-reading)
 
 ## Overview
-<p>Protein structures prediction is important because the accuracy of protein structures influence how our understanding of its function and its interactions with other molecules, which can help to design new drugs to target specific molecular interactions. This repo contains six different ways of determining the native structure of biomolecules from simulation or clustering data. <b>These methods perfectly mapped all the structural motifs in the studied systems and required unprecedented linear scaling.</b></p>
+<p>Protein structures prediction is important because the accuracy of protein structures influence how our understanding of its function and its interactions with other molecules, which can help to design new drugs to target specific molecular interactions. <b>Protein Retrieval via Integrative Molecular Ensembles (PRIME)</b> is a novel algorithm that predicts the native structure of a protein from simulation or clustering data. This repo contains six different ways of determining the native structure of biomolecules from simulation or clustering data. These methods perfectly mapped all the structural motifs in the studied systems and required unprecedented linear scaling.</p>
 &nbsp
 <figure>
 <img src="img/2k2e.png" alt="2k2e" width="400" height=auto align="right"></a>
