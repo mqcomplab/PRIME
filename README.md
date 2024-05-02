@@ -5,14 +5,17 @@
 <h3 align="center"> 
     <p><b>🪄 Predict Protein Structure with Precision 🪄</b></p>
     </h3>
-    
-Table of Contents
-=================
+
+#### Table of Contents
 - [Overview](#overview)
+- [Installation](#installation)
 - [Tutorial](#tutorial)
     - [1. Input Preparations](#1-input-preparations)
     - [2. Cluster Assignment](#2-cluster-assignment)
     - [3. Cluster Normalization](#3-cluster-normalization)
+    - [4. Similarity Calculations](#4-similarity-calculations)
+    - [5. Representative Frames](#5-representative-frames)
+- [Further Reading](#further-reading)
 
 ## Overview
 <p>Protein structures prediction is important because the accuracy of protein structures influence how our understanding of its function and its interactions with other molecules, which can help to design new drugs to target specific molecular interactions. This repo contains six different ways of determining the native structure of biomolecules from simulation or clustering data. <b>These methods perfectly mapped all the structural motifs in the studied systems and required unprecedented linear scaling.</b></p>
@@ -136,7 +139,7 @@ Keys are frame #. Values are [cluster 1 similarity, cluster #2 similarity, ..., 
 python ../../utils/rep_frames.py -m union -s outputs -d ../normalization -t 0.1 -i SM
 ```
 
-### Further Reading
+## Further Reading
 For more information on the PRIME algorithm, please refer to the [PRIME paper](https://www.biorxiv.org/content/10.1101/2024.03.19.585783v1). Please cite using [CITATION.bib](CITATION.bib).
 <img src="img/methods.jpg" alt="methods" width="500" height=auto align="center"></a>
 
