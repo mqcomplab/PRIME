@@ -34,7 +34,7 @@
 
 ## Installation
 PRIME requires Python 3.6+ and the following packages: MDAnalysis, numpy, and matplotlib. 
-``` 
+```bash
 git clone https://github.com/lexin-chen/PRIME.git
 cd PRIME
 ```
