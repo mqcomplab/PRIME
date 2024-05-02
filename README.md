@@ -1,6 +1,5 @@
-<img src="img/logo.png" width="800" height=auto align="center"></a>
-
 <h3 align="center"> 
+    <img src="img/logo.png" width="500" height=auto align="center"></a>
     <p><b>🪄 Predict Protein Structure with Precision 🪄</b></p>
     </h3>
 
