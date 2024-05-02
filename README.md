@@ -53,7 +53,7 @@ Prepare a valid topology file (e.g. `.pdb`, `.prmtop`), trajectory file (e.g. `.
 ### 2. Cluster Assignment
 In this example, we will use *k*-means clustering to assign labels to the clusters and the number of clusters will be 20. Any clustering method can be used as long as the data is clustered (e.g. DBSCAN, Hierarchical Clustering). **Please check out [MDANCE](https://github.com/mqcomplab/MDANCE) for more clustering methods!**
 
-[scripts/nani/assign_labels.py](scripts/nani/assign_labels.py) will assign labels to the clusters using *k*-means clustering
+[scripts/nani/assign_labels.py](scripts/clusters/assign_labels.py) will assign labels to the clusters using *k*-means clustering
 
     # System info - EDIT THESE
     input_traj_numpy = '../../example/aligned_tau.npy'
@@ -83,10 +83,10 @@ python assign_labels.py
 2. csv file containing the population of each cluster.
 
 ### 3. Cluster Trajectories
-[scripts/outputs/postprocessing.ipynb](scripts/outputs/postprocessing.ipynb) will use the indices from last step to extract the designated frames from the original trajectory for each cluster.
+[scripts/outputs/postprocessing.ipynb](scripts/clusters/postprocessing.ipynb) will use the indices from last step to extract the designated frames from the original trajectory for each cluster.
 
 ### 4. Cluster Normalization
-With already clustered data, [scripts/normalization/normalize.py](scripts/normalization/normalize.py) Normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
+ With already clustered data, [scripts/normalization/normalize.py](scripts/normalization/normalize.py) will normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
 
     # System info - EDIT THESE
     input_top = '../../example/aligned_tau.pdb'
@@ -137,12 +137,12 @@ Keys are frame #. Values are [cluster 1 similarity, cluster #2 similarity, ..., 
 ### 6. Representative Frames
 [scripts/prime/exec_rep_frames.py](scripts/prime/exec_rep_frames.py) will determine the native structure of the protein using the similarity dictionary generated in step 5.
 
--`h` - for help with the argument options.
--`m` - methods (for one method, None for all methods)
--`s` - folder to access for `w_union_SM_t10.txt` file
--`i` - similarity index (*required*)
--`t` - Fraction of outliers to trim in decimals (default is None).
--`d` - directory where the `normed_clusttraj.c*` files are located (required if method is None)
+- `h` - for help with the argument options.
+- `m` - methods (for one method, None for all methods)
+- `s` - folder to access for `w_union_SM_t10.txt` file
+- `i` - similarity index (*required*)
+- `t` - Fraction of outliers to trim in decimals (default is None).
+- `d` - directory where the `normed_clusttraj.c*` files are located (required if method is None)
 
 #### Example 
 ```bash
