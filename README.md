@@ -70,8 +70,7 @@ python assign_labels.py
 ```
 
 ### 3. Cluster Normalization
-
-- Normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
+With already clustered data, [scripts/normalization/normalize.py](scripts/normalization/normalize.py) Normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
 ```
 cd sample_clusters
 python normalize.py -b 950

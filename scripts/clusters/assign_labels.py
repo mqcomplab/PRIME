@@ -30,7 +30,7 @@ if __name__ == '__main__':
             f.write(f'{i * sieve},{row}\n')
     
     # Calculate population of each cluster
-    with open(f'{output_dir}/summary_{n_clusters}.txt', 'w') as f:
-        f.write(f'# Cluster Index, Fraction out of total pixels {len(labels)}\n')
+    with open(f'{output_dir}/summary_{n_clusters}.csv', 'w') as f:
+        f.write('# Cluster Index, Number of frames, Fraction out of total pixels\n')
         for i, row in enumerate(np.bincount(labels)):
-            f.write(f'{i} {row}\n')
+            f.write(f'{i},{row},{row/len(labels)}\n')
