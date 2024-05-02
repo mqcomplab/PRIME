@@ -120,8 +120,20 @@ To generate a similarity dictionary using data in [../normalization](scripts/nor
 The result is a dictionary organized as followes:
 Keys are frame #. Values are [cluster 1 similarity, cluster #2 similarity, ..., average similarity of all clusters].
 
-### Step 4. Determine the native structure.
-`scripts/rep.py`
+### 5. Representative Frames
+[scripts/prime/exec_rep_frames.py](scripts/prime/exec_rep_frames.py) will determine the native structure of the protein using the similarity dictionary generated in step 4.
+
+    -`h` - for help with the argument options.
+    -`m` - methods (for one method, None for all methods)
+    -`s` - folder to access for `w_union_SM_t10.txt` file
+    -`i` - similarity index (*required*)
+    -`t` - Fraction of outliers to trim in decimals (default is None).
+    -`d` - directory where the `normed_clusttraj.c*` files are located (required if method is None)
+
+#### Example 
+```bash
+python ../../utils/rep_frames.py -m union -s outputs -d ../normalization -t 0.1 -i SM
+```
 
 ### Further Reading
 For more information on the PRIME algorithm, please refer to the [PRIME paper](https://www.biorxiv.org/content/10.1101/2024.03.19.585783v1). Please cite using [CITATION.bib](CITATION.bib).
