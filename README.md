@@ -10,10 +10,8 @@ Table of Contents
 - [Overview](#overview)
 - [Tutorial](#tutorial)
     - [1. Input Preparations](#1-input-preparations)
-    - [2. NANI Screening](#2-nani-screening)
-    - [3. Analysis of NANI Screening Results](#3-analysis-of-nani-screening-results)
-    - [4. Cluster Assignment](#4-cluster-assignment)
-    - [5. Extract frames for each cluster (Optional)](#5-extract-frames-for-each-cluster-optional)
+    - [2. Cluster Assignment](#2-cluster-assignment)
+    - [3. Cluster Normalization](#3-cluster-normalization)
 
 ## Overview
 <p>Protein structures prediction is important because the accuracy of protein structures influence how our understanding of its function and its interactions with other molecules, which can help to design new drugs to target specific molecular interactions. This repo contains six different ways of determining the native structure of biomolecules from simulation or clustering data. <b>These methods perfectly mapped all the structural motifs in the studied systems and required unprecedented linear scaling.</b></p>
@@ -29,18 +27,50 @@ git clone https://github.com/lexin-chen/PRIME.git
 cd PRIME
 ```
 requires Python 3.6+ and the following packages: MDAnalysis, numpy, and matplotlib. 
-```
+
 `modules` contains the functions required to run the algorithm. `sample_clusters/clusttraj.c*` contains sample clustering files prepared through CPPTRAJ Hierarchical clustering. `new_clusters/normalize.py` normalizes clustering files through min-max normalization. `similarity.py` generates a similarity dictionary from running the protein refinement method.
 
 ## Tutorial
+The following tutorial will guide you through the process of determining the native structure of a biomolecule using the PRIME algorithm. If you already have clustered data, you can skip to Step 3.
 
-### Step 1.
-```
-git clone https://github.com/lexin-chen/PRIME.git
-```
-### Step 2. Normalization
+### 1. Input Preparations
+Preparation for Molecular Dynamics Trajectory
 
-- Normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
+Prepare a valid topology file (e.g. `.pdb`, `.prmtop`), trajectory file (e.g. `.dcd`, `.nc`), and the atom selection. This step will convert a Molecular Dynamics trajectory to a numpy ndarray. **Make sure the trajectory is already aligned and/or centered if needed!**
+
+**Step-by-step tutorial can be found in the [scripts/inputs/preprocessing.ipynb](../scripts/inputs/preprocessing.ipynb).**
+
+### 2. Cluster Assignment
+In this example, we will use *k*-means clustering to assign labels to the clusters and the number of clusters will be 20. Any clustering method can be used as long as the data is clustered (e.g. DBSCAN, Hierarchical Clustering). **Please check out [MDANCE](https://github.com/mqcomplab/MDANCE) for more clustering methods!**
+
+[scripts/nani/assign_labels.py](scripts/nani/assign_labels.py) will assign labels to the clusters using *k*-means clustering
+
+    # System info - EDIT THESE
+    input_traj_numpy = '../../example/aligned_tau.npy'
+    N_atoms = 50
+    sieve = 1
+
+    # K-means params - EDIT THESE
+    n_clusters = 20
+    output_dir = 'outputs'
+
+#### Inputs
+##### System info
+`input_traj_numpy` is the numpy array prepared from step 1. <br>
+`N_atoms` is the number of atoms used in the clustering, should be same as atom selection in step 1.<br>
+`sieve` takes every `sieve`th frame from the trajectory for analysis. <br>
+
+##### *k*-means params
+`n_clusters` is the number of clusters for labeling. <br>
+`output_dir` is the directory where the output files will be saved. <br>
+
+#### Execution
+```bash
+python assign_labels.py
+```
+
+### 3. Cluster Normalization
+With already clustered data, [scripts/normalization/normalize.py](scripts/normalization/normalize.py) Normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
 ```
 cd sample_clusters
 python normalize.py -b 950

@@ -244,7 +244,7 @@ def weight_dict(file_path=None, summary_file=None, dict=None, n_clusters=None):
     for key in dict:
         dict[key].pop()
     
-    num = np.loadtxt(summary_file, unpack=True, usecols=(1), skiprows=(1))
+    num = np.loadtxt(summary_file, unpack=True, usecols=(1), skiprows=(1), delimiter=',')
     if n_clusters:
         num = num[0:n_clusters]
     w_sum = np.sum(num, axis=0)
