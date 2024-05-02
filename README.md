@@ -71,10 +71,18 @@ python assign_labels.py
 
 ### 3. Cluster Normalization
 With already clustered data, [scripts/normalization/normalize.py](scripts/normalization/normalize.py) Normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
-```
-cd sample_clusters
-python normalize.py -b 950
-```
+
+    # System info - EDIT THESE
+    input_top = '../../example/aligned_tau.pdb'
+    unnormed_cluster_dir = '../clusters/outputs/clusttraj_*'
+    output_base_name = 'normed_clusttraj'
+    atomSelection = 'resid 3 to 12 and name N CA C O H'
+    n_clusters = 10
+
+#### Inputs
+##### System info
+`input_top` is the topology file used in the clustering. <br>
+`unnormed_cluster_dir` is the directory where the clustering files are located from step 2. <br>
 Output will have `normed_clusttraj.c*` files and `normed_data.txt`, appended all normed files together.
 
 ### Step 3. Similarity Calculations
