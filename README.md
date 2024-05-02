@@ -53,7 +53,7 @@ Prepare a valid topology file (e.g. `.pdb`, `.prmtop`), trajectory file (e.g. `.
 ### 2. Cluster Assignment
 In this example, we will use *k*-means clustering to assign labels to the clusters and the number of clusters will be 20. Any clustering method can be used as long as the data is clustered (e.g. DBSCAN, Hierarchical Clustering). **Please check out [MDANCE](https://github.com/mqcomplab/MDANCE) for more clustering methods!**
 
-[scripts/nani/assign_labels.py](scripts/nani/assign_labels.py) will assign labels to the clusters using *k*-means clustering
+[scripts/nani/assign_labels.py](scripts/clusters/assign_labels.py) will assign labels to the clusters using *k*-means clustering
 
     # System info - EDIT THESE
     input_traj_numpy = '../../example/aligned_tau.npy'
