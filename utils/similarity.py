@@ -22,10 +22,10 @@ parser.add_argument('-t', '--trim_frac', type=float, help='Fraction of outliers 
                     (e.g. 0.1, default: None)', default=None)
 parser.add_argument('-w', '--weighted_by_frames', help='Weighing clusters by frames it contains. \
                     (default: True)', default=True)
-parser.add_argument('-d', '--cluster_folder', help='Location of the cluster files directory', 
-                    default="new_clusters/")
+parser.add_argument('-d', '--cluster_folder', help='Location of the cluster files directory',
+                    required=True)
 parser.add_argument('-s', '--summary_file', help='Location of CPPTRAJ cluster summary file', 
-                    default="summary")
+                    required=True)
 args = parser.parse_args()
 
 # Calculate similarities
