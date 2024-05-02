@@ -68,6 +68,9 @@ In this example, we will use *k*-means clustering to assign labels to the cluste
 ```bash
 python assign_labels.py
 ```
+#### Outputs
+1. csv file containing the cluster labels for each frame.
+2. csv file containing the population of each cluster.
 
 ### 3. Cluster Normalization
 With already clustered data, [scripts/normalization/normalize.py](scripts/normalization/normalize.py) Normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
@@ -83,7 +86,17 @@ With already clustered data, [scripts/normalization/normalize.py](scripts/normal
 ##### System info
 `input_top` is the topology file used in the clustering. <br>
 `unnormed_cluster_dir` is the directory where the clustering files are located from step 2. <br>
-Output will have `normed_clusttraj.c*` files and `normed_data.txt`, appended all normed files together.
+`output_base_name` is the base name for the output files. <br>
+`atomSelection` is the atom selection used in the clustering. <br>
+`n_clusters` is the number of clusters used in the PRIME. If number less than total number of cluster, it will take top *n* number of clusters. <br>
+
+```bash
+python normalize.py
+```
+
+#### Outputs
+1. `normed_clusttraj.c*.npy` files, normalized clustering files.
+2. `normed_data.npy`, appended all normed files together.
 
 ### Step 3. Similarity Calculations
 Back at root directory, `similarity.py` generates a similarity dictionary from running the protein refinement method. 
