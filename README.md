@@ -98,8 +98,8 @@ python normalize.py
 1. `normed_clusttraj.c*.npy` files, normalized clustering files.
 2. `normed_data.npy`, appended all normed files together.
 
-### Step 3. Similarity Calculations
-Back at root directory, `similarity.py` generates a similarity dictionary from running the protein refinement method. 
+### 4. Similarity Calculations
+[scripts/prime/exec_similarity.py](scripts/prime/exec_similarity.py) generates a similarity dictionary from running PRIME. 
 - `-h` - for help with the argument options.
 - `-m` - methods (*required*)
 - `-n` - number of clusters (*required*)
@@ -109,8 +109,9 @@ Back at root directory, `similarity.py` generates a similarity dictionary from r
 - `-d` - directory where the `normed_clusttraj.c*` files are located.
 - `-s` - location where `summary` file is located
 
-```
-python similarity.py -m medoid -n 11 -i RR -t 0.1
+#### Example
+```bash
+python ../../utils/rep_frames.py -m union -s outputs -d ../normalization -t 0.1 -i SM
 ```
 To generate a similarity dictionary using data in `sample_clusters/normed_clusttraj.c*` using the medoid method (3.1 in *Fig 1*) and Russell Rao index. In addition, 10% of the outliers were trimmed. 
 
