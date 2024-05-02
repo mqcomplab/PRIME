@@ -100,21 +100,23 @@ python normalize.py
 
 ### 4. Similarity Calculations
 [scripts/prime/exec_similarity.py](scripts/prime/exec_similarity.py) generates a similarity dictionary from running PRIME. 
+
 - `-h` - for help with the argument options.
-- `-m` - methods (*required*)
-- `-n` - number of clusters (*required*)
-- `-i` - similarity index (*required*)
-- `-t` - Fraction of outliers to trim in decimals. 
-- `-w` - Weighing clusters by frames it contains.
-- `-d` - directory where the `normed_clusttraj.c*` files are located.
-- `-s` - location where `summary` file is located
+- `-m` - methods, pairwise, union, medoid, outlier (*required*).
+- `-n` - number of clusters (*required*).
+- `-i` - similarity index, RR or SM (*required*).
+- `-t` - Fraction of outliers to trim in decimals (default is None).
+- `-w` - Weighing clusters by frames it contains (default is True).
+- `-d` - directory where the `normed_clusttraj.c*.npy` files are located (*required*)
+- `-s` - location where `summary` file is located with population of each cluster (*required*)
 
-#### Example
+#### Example 
 ```bash
-python ../../utils/rep_frames.py -m union -s outputs -d ../normalization -t 0.1 -i SM
+python ../../utils/similarity.py -m union -n 10 -i SM -t 0.1 -d ../normalization -s ../clusters/outputs/summary_20.txt
 ```
-To generate a similarity dictionary using data in `sample_clusters/normed_clusttraj.c*` using the medoid method (3.1 in *Fig 1*) and Russell Rao index. In addition, 10% of the outliers were trimmed. 
+To generate a similarity dictionary using data in [../normalization](scripts/normalization/) (make sure you are in the prime directory) using the union method (2.2 in *Fig 2*) and Sokal Michener index. In addition, 10% of the outliers were trimmed. You can either `python exec_similarity.py` or run example above.
 
+#### Outputs
 The result is a dictionary organized as followes:
 Keys are frame #. Values are [cluster 1 similarity, cluster #2 similarity, ..., average similarity of all clusters].
 
@@ -122,6 +124,7 @@ Keys are frame #. Values are [cluster 1 similarity, cluster #2 similarity, ..., 
 `scripts/rep.py`
 
 ### Further Reading
+For more information on the PRIME algorithm, please refer to the [PRIME paper](https://www.biorxiv.org/content/10.1101/2024.03.19.585783v1). Please cite using [CITATION.bib](CITATION.bib).
 <img src="img/methods.jpg" alt="methods" width="500" height=auto align="center"></a>
 
  *Fig 2. Six techniques of protein refinement. Blue is top cluster.* 
