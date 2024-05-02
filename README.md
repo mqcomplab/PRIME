@@ -83,7 +83,7 @@ python assign_labels.py
 2. csv file containing the population of each cluster.
 
 ### 3. Cluster Trajectories
-[scripts/outputs/postprocessing.ipynb](scripts/outputs/postprocessing.ipynb) will use the indices from last step to extract the designated frames from the original trajectory for each cluster.
+[scripts/outputs/postprocessing.ipynb](scripts/clusters/postprocessing.ipynb) will use the indices from last step to extract the designated frames from the original trajectory for each cluster.
 
 ### 4. Cluster Normalization
  With already clustered data, [scripts/normalization/normalize.py](scripts/normalization/normalize.py) will normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
