@@ -200,7 +200,8 @@ class FrameSimilarity:
         if not self.weighted_by_frames:
             return nw_dict
         elif self.weighted_by_frames:
-            return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
+            return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, 
+                               n_clusters=self.n_clusters)
 
 def trim_outliers(total_data, trim_frac=0.1, n_ary='RR', weight='nw', removal='nan'):
     """Trims a desired percentage of outliers (most dissimilar) from the dataset 
