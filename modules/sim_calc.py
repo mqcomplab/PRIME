@@ -7,49 +7,69 @@ import glob
 class FrameSimilarity:
     """A class to calculate the similarity between clusters.
     
-    Attributes:
-        c0 (numpy.ndarray): The dominant cluster.
-        input_files (list): The list of cluster files.
-        summary_file (str): The path to the summary file.
-        n_clusters (int): The number of clusters to analyze.
-        weighted_by_frames (bool): Whether to weight the similarity values by the number of frames in the cluster.
-        n_ary (str): The n_ary similarity metric to use.
-        weight (str): The weight to use for the similarity metric.
+    Attributes
+    ----------
+    c0 : numpy.ndarray
+        The data for the top cluster.
+    input_files : list
+        A list of the cluster files.
+    summary_file : str
+        The path to the summary file.
+    n_clusters : int
+        The number of clusters to analyze.
+    weighted_by_frames : bool
+        Whether to weight similarity values by the number of frames.
+    n_ary : str
+        The similarity metric to use for comparing clusters.
+    weight : str
+        The weighting scheme to use for comparing clusters.
+    sims : dict
+        A dictionary to store the similarity values.
     
-    Methods:
-        calculate_pairwise: Calculates the similarity between the dominant cluster and all other clusters.
-        calculate_union: Calculates the similarity between the dominant cluster and the union of all other clusters.
-        _perform_calculation: Auxiliary function to calculate the similarity between the dominant cluster and a single cluster.
-        calculate_medoid: Calculates the similarity between the dominant cluster and the cluster with the lowest average distance to the dominant cluster.
-        calculate_outliers: Calculates the similarity between the dominant cluster and the cluster with the highest average distance to the dominant cluster.
+    Methods
+    -------
+    calculate_pairwise()
+        Calculates pairwise similarity between each cluster and all other clusters.
+    calculate_union()
+        Calculates the extended similarity between the union of frame in c0 and cluster k.
+    calculate_medoid()
+        Calculates the pairwise similarity between every frame in c0 and the medoid of each cluster.
+    calculate_outlier()
+        Calculates the pairwise similarity between every frame in c0 and the outlier of each cluster.
     """
     
     def __init__(self, cluster_folder=None, summary_file=None, trim_frac=None, n_clusters=None, 
                  weighted_by_frames=True, n_ary='RR', weight='nw'):
         """Initializes instances for the FrameSimilarity class.
         
-        Args:
-            cluster_folder (str): The path to the folder containing the normalized 
-                cluster files.
-            summary_file (str): The path to the summary file containing the number 
-                of frames for each cluster (CPPTRAJ clustering output).
-            trim_frac (float): The fraction of outliers to trim from the top cluster.
-            n_clusters (int): The number of clusters to analyze, None for all clusters.
-            weighted_by_frames (bool): Whether to weight similarity values by the 
-                number of frames.
-            n_ary (str): The similarity metric to use for comparing clusters. 
-            weight (str): The weighting scheme to use for comparing clusters.
-
-        Returns:
-            None.
-            
-        Notes:
-            Options for `n_ary` and `weight` under `esim.py`.
+        Parameters
+        ----------
+        cluster_folder : str
+            The path to the folder containing the normalized cluster files.
+        summary_file : str
+            The path to the summary file containing the number of frames for each cluster.
+        trim_frac : float
+            The fraction of outliers to trim from the top cluster.
+        n_clusters : int
+            The number of clusters to analyze, None for all clusters.
+        weighted_by_frames : bool
+            Whether to weight similarity values by the number of frames.
+        n_ary : str
+            The similarity metric to use for comparing clusters.
+        weight : str
+            The weighting scheme to use for comparing clusters.
+        
+        Notes
+        -----
+        - For each cluster file, loads the data and calculates the similarity score 
+        with the top (c0) cluster.
+        - The esim index used is defined by the `n_ary` parameter.
         """
         self.c0 = np.load(f"{cluster_folder}/normed_clusttraj.c0.npy")
         if trim_frac:
             self.c0 = trim_outliers(self.c0, trim_frac=trim_frac, n_ary=n_ary, weight=weight)
-        self.input_files = sorted(glob.glob(f"{cluster_folder}/normed_clusttraj.c*"), key=lambda x: int(re.findall("\d+", x)[0]))[1:]
+        self.input_files = sorted(glob.glob(f"{cluster_folder}/normed_clusttraj.c*"), 
+                                  key=lambda x: int(re.findall("\d+", x)[0]))[1:]
         self.summary_file = summary_file
         self.n_clusters = n_clusters
         self.weighted_by_frames = weighted_by_frames
@@ -58,20 +78,15 @@ class FrameSimilarity:
         self.sims = {}
     
     def calculate_pairwise(self):
-        """Calculates pairwise similarity between each cluster and all other clusters.
-
-        Notes:
-            For each cluster file, loads the data and calculates the similarity score 
-                with the top (c0) cluster.
-            The similarity score is calculated as the average of pairwise similarity 
-                values between each frame in the cluster and the top c0 cluster.
-            The esim index used is defined by the `n_ary` parameter.
+        """The similarity score is calculated as the average of pairwise similarity 
+        values between each frame in the cluster and the top c0 cluster.
         
-        Returns:
-            If `frame_weighted_sim` returns `False`, 
-                nw_dict (dict): unweighted average similarity values.
-            If `frame_weighted_sim` returns `True`, 
-                w_dict (dict): calls `weight_dict` function to weight similarity values.
+        Returns
+        -------
+        If `frame_weighted_sim` returns `False`, 
+            nw_dict (dict): unweighted average similarity values.
+        If `frame_weighted_sim` returns `True`,
+            w_dict (dict): calls `weight_dict` function to weight similarity values.
         """
         for each, file in enumerate(self.input_files):
             ck = np.load(file)
@@ -95,19 +110,15 @@ class FrameSimilarity:
             return weight_dict(file_path=None, summary_file=self.summary_file, dict=nw_dict, n_clusters=self.n_clusters)
 
     def calculate_union(self):
-        """ Calculates the extended similarity between the union of frame in c0 and cluster k.
-
-        Notes:
-            For each cluster file, loads the data and calculates the extended similarity.
-            The similarity score is calculated as the union similarity between 
-                all frames in the cluster and the top c0 cluster.
-            The esim index used is defined by the `n_ary` parameter.
+        """The similarity score is calculated as the union similarity between 
+        all frames in the cluster and the top c0 cluster.
         
-        Returns:
-            If `frame_weighted_sim` returns `False`, 
-                nw_dict (dict): unweighted average similarity values.
-            If `frame_weighted_sim` returns `True`, 
-                w_dict (dict): calls `weight_dict` function to weight similarity values.
+        Returns
+        -------
+        If `frame_weighted_sim` returns `False`, 
+            nw_dict (dict): unweighted average similarity values.
+        If `frame_weighted_sim` returns `True`,
+            w_dict (dict): calls `weight_dict` function to weight similarity values.
         """
         for each, file in enumerate(self.input_files):
             ck = np.load(file)
