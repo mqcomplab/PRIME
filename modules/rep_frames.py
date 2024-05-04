@@ -22,12 +22,18 @@ def calculate_max_key(dict):
 def gen_all_methods_max(sim_folder='nw', norm_folder='v3_norm', weighted_by_frames=True, trim_frac=0.1, n_ary='RR', weight='nw', output_name='rep'):
     """Generate the representative frame for each method.
 
-    Args:
-        weighted_by_frames (bool, optional): Similarity is weighted by frames. Defaults to True.
-        trim_frac (float, optional): . Defaults to 0.1.
-        n_ary (str, optional): _description_. Defaults to "RR".
-        weight (str, optional): _description_. Defaults to 'nw'.
-        output_name (str, optional): _description_. Defaults to "rep".
+    Parameters
+    ----------
+    weighted_by_frames : bool, optional
+        Similarity is weighted by frames. The default is True.
+    trim_frac : float, optional
+        The fraction of outliers to be trimmed. The default is 0.1.
+    n_ary : str, optional
+        The n-ary method. The default is 'RR'.
+    weight : str, optional
+        The weight method. The default is 'nw'.
+    output_name : str, optional
+        The output name. The default is 'rep'.
     """
     if weighted_by_frames is True:
         w = "w_"
