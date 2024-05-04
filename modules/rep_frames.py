@@ -6,28 +6,43 @@ import json
 import re
 
 def calculate_max_key(dict):
-    """Find the key with the max value"""
+    """Calculate the key with the maximum value in a dictionary.
+
+    Parameters
+    ----------
+    dict : dict
+        The dictionary to be searched.
+    
+    Returns
+    -------
+    max_key : int
+        The key with the maximum value.
+    """
     max_val = float('-inf')
     max_key = None
-
     for k, v in dict.items():
         for num in v:
             if num > max_val:
                 max_val = num
                 max_key = k
-
     max_key = int(re.findall(r'\d+', max_key)[0])
     return max_key
 
 def gen_all_methods_max(sim_folder='nw', norm_folder='v3_norm', weighted_by_frames=True, trim_frac=0.1, n_ary='RR', weight='nw', output_name='rep'):
     """Generate the representative frame for each method.
 
-    Args:
-        weighted_by_frames (bool, optional): Similarity is weighted by frames. Defaults to True.
-        trim_frac (float, optional): . Defaults to 0.1.
-        n_ary (str, optional): _description_. Defaults to "RR".
-        weight (str, optional): _description_. Defaults to 'nw'.
-        output_name (str, optional): _description_. Defaults to "rep".
+    Parameters
+    ----------
+    weighted_by_frames : bool, optional
+        Similarity is weighted by frames. The default is True.
+    trim_frac : float, optional
+        The fraction of outliers to be trimmed. The default is 0.1.
+    n_ary : str, optional
+        The n-ary method. The default is 'RR'.
+    weight : str, optional
+        The weight method. The default is 'nw'.
+    output_name : str, optional
+        The output name. The default is 'rep'.
     """
     if weighted_by_frames is True:
         w = "w_"
@@ -81,12 +96,26 @@ def gen_all_methods_max(sim_folder='nw', norm_folder='v3_norm', weighted_by_fram
 def gen_one_method_max(method, sim_folder='nw', norm_folder='v3_norm', weighted_by_frames=True, trim_frac=0.1, n_ary='RR', weight='nw', output_name='rep'):
     """Generate the representative frame for each method.
 
-    Args:
-        weighted_by_frames (bool, optional): Similarity is weighted by frames. Defaults to True.
-        trim_frac (float, optional): . Defaults to 0.1.
-        n_ary (str, optional): _description_. Defaults to "RR".
-        weight (str, optional): _description_. Defaults to 'nw'.
-        output_name (str, optional): _description_. Defaults to "rep".
+    Parameters
+    ----------
+    method : str
+        The method to find the representative frame.
+    weighted_by_frames : bool, optional
+        Similarity is weighted by frames. The default is True.
+    trim_frac : float, optional
+        The fraction of outliers to be trimmed. The default is 0.1.
+    n_ary : str, optional
+        The n-ary method. The default is 'RR'.
+    weight : str, optional
+        The weight method. The default is 'nw'.
+    output_name : str, optional
+        The output name. The default is 'rep'.
+    
+    Raises
+    ------
+    ValueError
+        Invalid method. Choose from 'medoid_all', 'medoid_c0', 
+        'medoid_c0(trimmed)', 'pairwise', 'union', 'medoid', 'outlier'
     """
     if method not in ['medoid_all', 'medoid_c0', 'medoid_c0(trimmed)', 'pairwise', 'union', 'medoid', 'outlier']:
         raise ValueError("Invalid method. Choose from 'medoid_all', 'medoid_c0', 'medoid_c0(trimmed)', 'pairwise', 'union', 'medoid', 'outlier'")
