@@ -17,7 +17,6 @@
 - [Further Reading](#further-reading)
 
 ## Overview
-
 <table>
   <tr>
     <td>
@@ -31,7 +30,6 @@
     </td>
   </tr>
 </table>
-
 
 ## Installation
 PRIME requires Python 3.6+ and the following packages: MDAnalysis, numpy, and matplotlib. 
@@ -78,6 +76,7 @@ In this example, we will use *k*-means clustering to assign labels to the cluste
 ```bash
 python assign_labels.py
 ```
+
 #### Outputs
 1. csv file containing the cluster labels for each frame.
 2. csv file containing the population of each cluster.
@@ -127,6 +126,7 @@ python normalize.py
 ```bash
 python ../../utils/similarity.py -m union -n 10 -i SM -t 0.1 -d ../normalization -s ../clusters/outputs/summary_20.txt
 ```
+
 To generate a similarity dictionary using data in [../normalization](scripts/normalization/) (make sure you are in the prime directory) using the union method (2.2 in *Fig 2*) and Sokal Michener index. In addition, 10% of the outliers were trimmed. You can either `python exec_similarity.py` or run example above.
 
 #### Outputs
