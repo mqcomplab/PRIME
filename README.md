@@ -17,7 +17,6 @@
 - [Further Reading](#further-reading)
 
 ## Overview
-
 <table>
   <tr>
     <td>
@@ -31,7 +30,6 @@
     </td>
   </tr>
 </table>
-
 
 ## Installation
 PRIME requires Python 3.6+ and the following packages: MDAnalysis, numpy, and matplotlib. 
@@ -78,6 +76,7 @@ In this example, we will use *k*-means clustering to assign labels to the cluste
 ```bash
 python assign_labels.py
 ```
+
 #### Outputs
 1. csv file containing the cluster labels for each frame.
 2. csv file containing the population of each cluster.
@@ -86,7 +85,7 @@ python assign_labels.py
 [scripts/outputs/postprocessing.ipynb](scripts/clusters/postprocessing.ipynb) will use the indices from last step to extract the designated frames from the original trajectory for each cluster.
 
 ### 4. Cluster Normalization
- With already clustered data, [scripts/normalization/normalize.py](scripts/normalization/normalize.py) will normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
+With already clustered data, [scripts/normalization/normalize.py](scripts/normalization/normalize.py) will normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
 
     # System info - EDIT THESE
     input_top = '../../example/aligned_tau.pdb'
@@ -127,6 +126,7 @@ python normalize.py
 ```bash
 python ../../utils/similarity.py -m union -n 10 -i SM -t 0.1 -d ../normalization -s ../clusters/outputs/summary_20.txt
 ```
+
 To generate a similarity dictionary using data in [../normalization](scripts/normalization/) (make sure you are in the prime directory) using the union method (2.2 in *Fig 2*) and Sokal Michener index. In addition, 10% of the outliers were trimmed. You can either `python exec_similarity.py` or run example above.
 
 #### Outputs
@@ -157,4 +157,4 @@ For more information on the PRIME algorithm, please refer to the [PRIME paper](h
 
 <img src="img/methods.jpg" alt="methods" width="500" height=auto align="center"></a>
 
- *Fig 2. Six techniques of protein refinement. Blue is top cluster.* 
+*Fig 2. Six techniques of protein refinement. Blue is top cluster.*
