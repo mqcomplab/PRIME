@@ -85,7 +85,7 @@ python assign_labels.py
 [scripts/outputs/postprocessing.ipynb](scripts/clusters/postprocessing.ipynb) will use the indices from last step to extract the designated frames from the original trajectory for each cluster.
 
 ### 4. Cluster Normalization
- With already clustered data, [scripts/normalization/normalize.py](scripts/normalization/normalize.py) will normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
+With already clustered data, [scripts/normalization/normalize.py](scripts/normalization/normalize.py) will normalize the trajectory data between $[0,1]$ using the Min-Max Normalization. 
 
     # System info - EDIT THESE
     input_top = '../../example/aligned_tau.pdb'
