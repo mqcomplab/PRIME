@@ -158,3 +158,6 @@ For more information on the PRIME algorithm, please refer to the [PRIME paper](h
 <img src="img/methods.jpg" alt="methods" width="500" height=auto align="center"></a>
 
 *Fig 2. Six techniques of protein refinement. Blue is top cluster.*
+
+## Funding
+Research contained in this package was supported by the National Institute of General Medical Sciences of the National Institutes of Health under award number R35GM150620.
